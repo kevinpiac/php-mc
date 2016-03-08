@@ -77,3 +77,10 @@ var acceptToken = function(casper){
 	});
 };
 exports.acceptToken = acceptToken;
+
+var getToken = function(casper){
+	casper.echo("-------------------\n")
+	casper.echo(casper.getCurrentUrl());
+	casper.echo("-------------------\n")
+};
+exports.getToken = getToken;
