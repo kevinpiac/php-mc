@@ -80,7 +80,9 @@ exports.acceptToken = acceptToken;
 
 var getToken = function(casper){
 	casper.echo("-------------------\n")
-	casper.echo(casper.getCurrentUrl());
+	var token = casper.getCurrentUrl();
+	token = token.match("token=" + "(.*?)" + "&")[1];
+	casper.echo(token);
 	casper.echo("-------------------\n")
 };
 exports.getToken = getToken;
