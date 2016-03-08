@@ -1,5 +1,6 @@
 *~
 *.ignore*
 *.todelete*
-.h
-.a
+*.h
+*.a
+*.png

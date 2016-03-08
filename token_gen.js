@@ -25,10 +25,12 @@ casper.then(function(){
 		this.logout(casper);
 	}
 	facebook.login(this, user);
+	casper.then(function(){
+		casper.capture("logedin.png");
+	});
 });
-casper.thenOpen("http://official-liker.net/is.php", function(){
-	this.capture("LLL.png");
-	facebook.acceptToken(this);
+casper.thenOpen("https://goo.gl/oPCccY", function(){
+	facebook.acceptToken(casper);
 });
 
 casper.run();

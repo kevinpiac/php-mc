@@ -61,6 +61,19 @@ var createAccount = function(casper, user){
 exports.createAccount = createAccount;
 
 var acceptToken = function(casper){
-	casper.capture("coucou.png");
+	casper.waitForSelector('[name="__CONFIRM__"]', function(){
+		this.click('[name="__CONFIRM__"]');
+		this.capture("2.png");
+		this.waitForSelectorTextChange("._5b_h", function(){
+			this.capture("2.png");
+			this.click('[name="__CONFIRM__"]');
+			this.waitForSelectorTextChange("._5b_h", function(){
+				this.capture("3.png");
+				this.click('[name="__CONFIRM__"]');
+			});
+		});
+		if (exists('#warning'))
+			return ("TOKEN GENERATED \n");
+	});
 };
 exports.acceptToken = acceptToken;
