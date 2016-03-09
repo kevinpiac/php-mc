@@ -1,7 +1,7 @@
 <?php
 
 //server kevin$ casperjs script.js velardegav519@gmail.com UQBpqmBr384 1 --proxy=185.3.132.148:80 --proxy-auth=mrsoyer:tomylyjon
-include 'database.php';
+include '../database.php';
 
 $token = $_POST['token'];
 $fb_account_id = $_POST['fb_account_id'];
@@ -18,6 +18,6 @@ if (!empty($token) && !empty(fb_account_id))
 		      )
  );
  $sql = null;
- echo ("hello");
 }
+ echo ("hello bitch!");
 ?>

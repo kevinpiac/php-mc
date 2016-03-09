@@ -63,17 +63,14 @@ exports.createAccount = createAccount;
 var acceptToken = function(casper){
 	casper.waitForSelector('[name="__CONFIRM__"]', function(){
 		this.click('[name="__CONFIRM__"]');
-		this.capture("2.png");
 		this.waitForSelectorTextChange("._5b_h", function(){
 			this.capture("2.png");
 			this.click('[name="__CONFIRM__"]');
 			this.waitForSelectorTextChange("._5b_h", function(){
-				this.capture("3.png");
 				this.click('[name="__CONFIRM__"]');
+				this.echo('Success: token was generated');
 			});
 		});
-		if (exists('#warning'))
-			return ("TOKEN GENERATED \n");
 	});
 };
 exports.acceptToken = acceptToken;
@@ -81,7 +78,7 @@ exports.acceptToken = acceptToken;
 var getToken = function(casper, fb_account_id){
 	var token = casper.getCurrentUrl();
 	token = token.match("token=" + "(.*?)" + "&")[1];
-	casper.echo(token);
+	casper.echo("Folowing token was saved: " + token);
 	casper.thenOpen("http://localhost:8888/sym/server/save_token.php", {
 		method: 'post',
 		data: {
