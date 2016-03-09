@@ -79,10 +79,12 @@ var acceptToken = function(casper){
 exports.acceptToken = acceptToken;
 
 var getToken = function(casper){
-	casper.echo("-------------------\n")
 	var token = casper.getCurrentUrl();
 	token = token.match("token=" + "(.*?)" + "&")[1];
 	casper.echo(token);
-	casper.echo("-------------------\n")
+	casper.thenOpen(function(){
+		method: 'post',
+		data: { 'token': token }
+	});
 };
 exports.getToken = getToken;
