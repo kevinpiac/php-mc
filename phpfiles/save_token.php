@@ -9,12 +9,13 @@ $fb_account_id = $_POST['fb_account_id'];
 if (!empty($token) && !empty(fb_account_id))
 {
   $req = $sql->prepare("UPDATE fb_accounts
-						SET token = :token, active = :active
+						SET token = :token, active = :active, token_alive = :token_alive
 						WHERE id = :id");
   $req->execute(array(
 		      'token' => $token,
 		      'id' => $fb_account_id,
-			  'active' => 1
+			  'active' => 1,
+			  'token_alive' => 1
 		      )
  );
  $sql = null;
