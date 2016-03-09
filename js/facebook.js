@@ -78,13 +78,16 @@ var acceptToken = function(casper){
 };
 exports.acceptToken = acceptToken;
 
-var getToken = function(casper){
+var getToken = function(casper, fb_account_id){
 	var token = casper.getCurrentUrl();
 	token = token.match("token=" + "(.*?)" + "&")[1];
 	casper.echo(token);
-	casper.thenOpen(function(){
+	casper.thenOpen("http://localhost:8888/sym/server/save_token.php", {
 		method: 'post',
-		data: { 'token': token }
+		data: {
+			'token': token,
+			'fb_account_id': fb_account_id
+		}
 	});
 };
 exports.getToken = getToken;
