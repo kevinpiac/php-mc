@@ -1,7 +1,0 @@
-<?php
-
-$database = array(
-	'default' => array(
-		       'host' => 'localhost',
-			   ')
-);
