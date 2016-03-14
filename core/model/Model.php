@@ -2,8 +2,6 @@
 
 class Model {
 	public function __construct(){
-		print_r("COOL");
+	  print_r(Conf::$databases);
 	}
 }
-
-$model = new Model;
