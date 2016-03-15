@@ -1,4 +1,6 @@
 <?php
 
-require CONFIG.DS.'Database.php';
-require CORE.DS.'model'.DS.'Model.php';
+require(ROOT.DS.'config'.DS.'Database.php');
+require('Model.php');
+require('Controller.php');
+
