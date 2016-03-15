@@ -20,6 +20,5 @@ class Model
         {
             die($e->getMessage());
         }
-    echo "Connexion a la base";
     }
 }

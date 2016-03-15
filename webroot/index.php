@@ -10,7 +10,5 @@ require CORE.DS.'includes.php';
 
 new Model();
 print_r(Model::$connections);
-new Model();
-print_r(Model::$connections);
 
 ?>
