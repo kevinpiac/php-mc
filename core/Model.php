@@ -59,4 +59,12 @@ class Model
         $pre->execute();
         return ($pre->fetchAll(PDO::FETCH_OBJ));
     }
+
+    public function findFirst($params)
+    {
+        return (current($this->find($params)));
+    }
+
+    
+    
 }

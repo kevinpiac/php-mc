@@ -11,7 +11,7 @@ require(CORE.DS.'includes.php');
 $c = new Controller();
 $c->loadModel('Card');
 $c->Card->hello();
-$res = $c->Card->find(array(
+$params = array(
     'fields' => array(
         'email',
         'actif',
@@ -24,7 +24,9 @@ $res = $c->Card->find(array(
     'order' => array(
         'email' => ''
     ),
-));
+);
+$res = $c->Card->findFirst($params);
+
 echo '<pre>';
 print_r($res);
 echo '</pre>';
