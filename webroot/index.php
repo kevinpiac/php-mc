@@ -25,7 +25,8 @@ $params = array(
         'email' => ''
     ),
 );
-//$res = $c->Card->findFirst($params);
+//$res = $c->Card->find($params);
+$c->Card->id = 3;
 $c->Card->save(array(
     'email' => 'testsave@gmail.com',
     'point' => '1',

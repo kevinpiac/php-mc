@@ -67,22 +67,27 @@ class Model
 
     public function save($data)
     {
-        $req = 'INSERT INTO ' .$this->table.'(';
-        foreach ($data as $f => $v)
+        if (!isset($this->id))
         {
-            $req .= $f. ', ';
+            $req = 'INSERT INTO ' .$this->table.'(';
+            foreach ($data as $f => $v)
+            {
+                $req .= $f. ', ';
+            }
+            $req = substr($req, 0, -2);
+            $req .= ') VALUES(';
+            foreach ($data as $f => $v)
+            {
+                $req .= ':'.$f. ', ';
+            }
+            $req = substr($req, 0, -2);
+            $req .= ')';
+            if ($this->debug == true)
+                print_r($req);
+            $pre = $this->db->prepare($req);
+            $pre->execute($data);
         }
-        $req = substr($req, 0, -2);
-        $req .= ') VALUES(';
-        foreach ($data as $f => $v)
-        {
-            $req .= ':'.$f. ', ';
-        }
-        $req = substr($req, 0, -2);
-        $req .= ')';
-        if ($this->debug == true)
-            print_r($req);
-        $pre = $this->db->prepare($req);
-        $pre->execute($data);
+        else
+            echo ("this->id : ". $this->id);
     }    
 }
