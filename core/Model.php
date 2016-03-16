@@ -7,6 +7,7 @@ class Model
     public $conf = 'test';
     public $db;
     public $table = false;
+    public $debug = true;
 
     public function __construct()
     {
@@ -27,9 +28,22 @@ class Model
 
     public function find($params)
     {
-        $req = 'SELECT * FROM '.$this->table. ' as ' .get_class($this). '';
-        echo"searching -> ".$req;
-
+        if (!empty($params['fields']))
+            $fields = implode(", ",$params['fields']);
+        else
+            $fields = '*';
+        $req = 'SELECT ' .$fields. ' FROM '.$this->table. ' as ' .get_class($this). '';
+        if (!empty($params['conditions']))
+        {
+            $req .= ' WHERE ';
+            foreach ($params['conditions'] as $k => $v)
+            {
+                $req .= $k. ' ' .$v. ' AND ';
+            }
+            $req = substr($req, 0, -4);
+        }
+        if ($this->debug == true)
+            print_r($req);
         $pre = $this->db->prepare($req);
         $pre->execute();
         return ($pre->fetchAll(PDO::FETCH_OBJ));

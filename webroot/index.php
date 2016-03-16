@@ -11,7 +11,17 @@ require(CORE.DS.'includes.php');
 $c = new Controller();
 $c->loadModel('Card');
 $c->Card->hello();
-$res = $c->Card->find();
+$res = $c->Card->find(array(
+    'fields' => array(
+        'email',
+        'actif',
+        'desabo'
+    ),
+    'conditions' => array(
+        'actif' => '>= 1',
+        'id' => 'BETWEEN 2 AND 10'
+    ),
+));
 echo '<pre>';
 print_r($res);
 echo '</pre>';

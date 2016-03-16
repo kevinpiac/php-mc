@@ -6,6 +6,7 @@ class Card extends Model
 
 	public function hello()
 	{
-		echo("Hello");
+		echo("Hello World");
+		echo("<br>");
 	}
 }
