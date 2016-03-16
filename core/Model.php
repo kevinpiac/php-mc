@@ -82,13 +82,7 @@ class Model
         $req .= ')';
         if ($this->debug == true)
             print_r($req);
-        try{
-            $pre = $this->db->prepare($req);
-            $pre->execute($data);
-        }
-        catch(PDOException $e)
-        {
-            echo "Error " . $e->getMessage();
-        }
+        $pre = $this->db->prepare($req);
+        $pre->execute($data);
     }    
 }

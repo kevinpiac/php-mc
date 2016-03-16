@@ -27,10 +27,11 @@ $params = array(
 );
 //$res = $c->Card->findFirst($params);
 $c->Card->save(array(
-    'id' => '1',
     'email' => 'testsave@gmail.com',
-    'actif' => '1',
-    'desabo' => '2'
+    'point' => '1',
+    'actif' => '3',
+    'heure' => '3',
+    'coef' => '3',
 ));
 
 
