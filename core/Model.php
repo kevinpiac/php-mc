@@ -65,6 +65,30 @@ class Model
         return (current($this->find($params)));
     }
 
-    
-    
+    public function save($data)
+    {
+        $req = 'INSERT INTO ' .$this->table.'(';
+        foreach ($data as $f => $v)
+        {
+            $req .= $f. ', ';
+        }
+        $req = substr($req, 0, -2);
+        $req .= ') VALUES(';
+        foreach ($data as $f => $v)
+        {
+            $req .= ':'.$f. ', ';
+        }
+        $req = substr($req, 0, -2);
+        $req .= ')';
+        if ($this->debug == true)
+            print_r($req);
+        try{
+            $pre = $this->db->prepare($req);
+            $pre->execute($data);
+        }
+        catch(PDOException $e)
+        {
+            echo "Error " . $e->getMessage();
+        }
+    }    
 }

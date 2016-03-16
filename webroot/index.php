@@ -25,13 +25,15 @@ $params = array(
         'email' => ''
     ),
 );
-$res = $c->Card->findFirst($params);
+//$res = $c->Card->findFirst($params);
+$c->Card->save(array(
+    'id' => '1',
+    'email' => 'testsave@gmail.com',
+    'actif' => '1',
+    'desabo' => '2'
+));
+
 
 echo '<pre>';
 print_r($res);
 echo '</pre>';
-
-foreach ($res as $card)
-{
-	echo $card->email;
-}
