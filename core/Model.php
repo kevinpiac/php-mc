@@ -42,6 +42,17 @@ class Model
             }
             $req = substr($req, 0, -4);
         }
+        if (!empty($params['order']))
+        {
+            $req .= ' ORDER BY ';
+            foreach ($params['order'] as $k => $v)
+            {
+                $req .= $k. ' '. strtoupper($v). ', ';
+            }
+            $req = substr($req, 0, -2);
+        }
+        if (!empty($params['limit']))
+            $req .= ' LIMIT '.$params['limit'];
         if ($this->debug == true)
             print_r($req);
         $pre = $this->db->prepare($req);

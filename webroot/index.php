@@ -18,8 +18,11 @@ $res = $c->Card->find(array(
         'desabo'
     ),
     'conditions' => array(
-        'actif' => '>= 1',
-        'id' => 'BETWEEN 2 AND 10'
+        'id' => '>= 2'
+    ),
+    'limit' => '10',
+    'order' => array(
+        'email' => ''
     ),
 ));
 echo '<pre>';
