@@ -10,7 +10,6 @@ require(CORE.DS.'includes.php');
 
 $c = new Controller();
 $c->loadModel('Card');
-$c->Card->hello();
 $params = array(
     'fields' => array(
         'email',
@@ -25,17 +24,8 @@ $params = array(
         'email' => ''
     ),
 );
-//$res = $c->Card->find($params);
-$c->Card->id = 3;
-$c->Card->save(array(
-    'email' => 'testsave@gmail.com',
-    'point' => '1',
-    'actif' => '3',
-    'heure' => '3',
-    'coef' => '3',
-));
-
-
-echo '<pre>';
-print_r($res);
-echo '</pre>';
+//$res = $c->Card->findFirst($params);
+print_r("\n");
+//print_r("this id : ".$c->Card->id);
+print_r("\n");
+$res = $c->Card->findById('4');
