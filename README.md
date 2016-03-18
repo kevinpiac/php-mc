@@ -44,12 +44,18 @@ Le projet fonctionne selon une architecture Model - Controlleur. Les models sont
 ```
 
 - **Un** controlleur peut correspondre soit à **une table** en base de donnée, soit à **un** groupement logique de tâches. Par exemple, une table users aura un controlleur users qui sera en charge de plusieurs action (méthodes):
-* users->login()
-* users->logout()
-* users->register()
-* users->remove()
-* users->listAll()
-* etc.
+
+```
+#!php
+
+users->login()
+users->logout()
+users->register()
+users->remove()
+users->listAll()
+etc.
+```
+
 
 
 
