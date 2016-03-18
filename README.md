@@ -44,21 +44,20 @@ Le projet fonctionne selon une architecture Model - Controller. Les models sont 
 /model/ModelName.php
 ```
 ### Les controllers ###
-- **Un** controller peut correspondre soit à **une table** en base de donnée, soit à **un** groupement logique de tâches. Par exemple, une table users aura un controller users qui sera en charge de plusieurs action (méthodes):
+**Un** controller peut correspondre soit à **une table** en base de donnée, soit à **un** groupement logique de tâches. 
+- Par exemple, une table users aura un controller *Users* qui sera en charge de plusieurs action (méthodes):
 
 ```
 #!php
 
-users->login()
-users->logout()
-users->register()
-users->remove()
-users->listAll()
+Users->login()
+Users->logout()
+Users->register()
+Users->remove()
+Users->listAll()
 etc.
 ```
-
-
-
+- Dans certain cas un controller ne correspond pas forcement a une table de ou un Model. Nous pouvons imaginer un Controller *Verifications* qui aura pour rôle de s'occuper de toutes les vérifications dont notre application a besoin.
 
 Convention de nommage :
 ----------------------------
