@@ -93,6 +93,25 @@ includes.php // Il ne s'agit pas d'une class php, donc minuscule.
 --------------------------------------------------
 # ---------------------- LES MODELS ---------------------- #
 
+## Création d'un model ##
+
+Un fichier .php doit être Cree selon la norme ci-dessus. Imaginons un model Card, le fichier se nomera donc Card.php.
+
+```
+#!php
+
+// contenu du fichier /model/Card.php
+class Card extends Model
+{
+     public function maMethode()
+     {
+         // faire quelque chose ici.
+     }
+}
+```
+
+**Important :** model **héritera toujours** de la class Model.
+
 ## Utilisation ##
 
 Le model se charge depuis un Controller en utilisant la methode loadModel():
