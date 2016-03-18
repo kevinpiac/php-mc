@@ -5,12 +5,13 @@
 ```
 #!php
 
-* /config
-* * Database.php
-* /controller
-* * Cards.php
-* * all other controllers
-* /core
+/config
+   Database.php
+/controller
+   Cards.php
+/model
+   Card.php
+/core
 * * Controller.php
 * * Model.php
 * * includes.php
