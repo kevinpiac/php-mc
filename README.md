@@ -36,12 +36,14 @@ Le projet fonctionne selon une architecture Model - Controlleur. Les models sont
 
 ## Convention de structure : ##
 - **Un** model correspond à **une** table en base de donnée.
-- Tous les models seront créés dans le dossier 
-```
+- Tous les models seront créés dans le dossier model tel que :```
 #!php
 
 /model/ModelName.php
 ```
+
+- **Un** controlleur peut correspondre soit à une table en base de donnée, soit à un groupement logique de tâches.
+
 
 
 
