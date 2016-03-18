@@ -91,16 +91,19 @@ includes.php // Il ne s'agit pas d'une class php, donc minuscule.
 
 
 --------------------------------------------------
-# LES MODELS ---------------------- #
+# ---------------------- LES MODELS ---------------------- #
 
-Introduction
----------------------------
-Le model se charge depuis un Controller avec la **methode loadModel($name)**
---> exemple 
-**$c = new Controller();** // initialisation du controller principal
-**$c->loadModel('Card');** // chargement du Model Card.
-**$c->Card->methode();**  // je peux acceder directement au model Card depuis mon controlleur et lui appliquer une methode. 
+## Utilisation ##
 
+Le model se charge depuis un Controller en utilisant la methode loadModel():
+
+```
+#!php
+
+$c = new Controller();   // initialisation du controller
+$c->loadModel('Card');   // chargement du model 'Card'. On peut donc utiliser des methodes de 'Card'.
+$c->Card->maMethode();
+```
 ---------------------------------------------
 
 Recuperer des donnees
