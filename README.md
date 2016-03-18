@@ -145,44 +145,20 @@ $params = array(
       'name'  => 'asc'
     )
 );
+$res = $this->ModelName->find($params);
 ```
-Plus le tableau est complet plus la requête est précise. Dans le cas ou aucun champ n'est précisé le comportement de la fonction sera un 
+Plus le tableau est complet plus la requête est précise. Dans le cas ou aucun champ n'est précisé le comportement de la fonction sera :
 ```
 #!php
 
 SELECT * FROM tableName as ModelName
 ```
 
+IMPORTANT : find retourne un tableau d'objet (stdClass). Le traitement se fera donc de la maniere suivante.
 
-Tous les models heritent de cette methode. Elle peut prendre un array en parametre, mais cela reste facultatif. Pour le moment les parametres supportes sont les suivantes : 
-- fields *// array contenant les champs que l'on souhaite recuperer*
-- conditions *// array contenant les conditions (equivaut a WHERE)*
-- limit *// indique le nombre max de donnee a charger*
-- order *// array contenant les conditions d'organisation (equivaut a ORDER BY)
 
-Si aucun parametre n'est passe a find. Alors la requete correspond a un SELECT * FROM la_table_du_model
-
----> exemples :
-
-$res = $c->Card->find() // SELECT * FROM cards as Card
-$res = $c->Card->find(array(
-      'fields' => array(
-            'email',
-            'active',
-            'created'
-        ),
-        'conditions' => array(
-              'id' => '3',
-               'age' => 'BETWEEN 28 AND 39'
-        ),
-        'limit' => '10',
-        'order' => array(
-              'email' => 'desc',
-              'name' => 'asc'
-        )
-));
-
-IMPORTANT : find retourne un tableau d'objet. Le traiment se fera donc de la maniere suivante.
+```
+#!php
 
 foreach ($res as $k => $v)
 {
@@ -190,9 +166,11 @@ foreach ($res as $k => $v)
          echo $v->active; *// et non $v['active']*
          echo $v->created; *// et non $v['created']*
 }
+```
 
-**La methode findFirst([array $data]).**
---> fonctionne exactement de la meme maniere que find() sauf qu'elle retourne le premier element trouve.
+
+## findFirst([array $params]) ##
+Fonctionne exactement de la même manière que find() sauf qu'elle retourne le premier élément trouvé.
 
 **La methode save(array $data).**
 Cette methode permet d'inserer une ligne en base de donnee. Actuellement la methode gere uniquement l'insertion, a terme elle gerera automatiquement l'update de donnees si la ligne existe deja.
