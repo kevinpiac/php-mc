@@ -19,6 +19,10 @@
    Router.php
 /webroot
    index.php
+/js
+   account_gen.js
+   token_gen.js
+
 ```
 
 
