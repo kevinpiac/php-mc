@@ -172,14 +172,21 @@ foreach ($res as $k => $v)
 ## findFirst([array $params]) ##
 Fonctionne exactement de la même manière que find() sauf qu'elle retourne le premier élément trouvé.
 
-**La methode save(array $data).**
-Cette methode permet d'inserer une ligne en base de donnee. Actuellement la methode gere uniquement l'insertion, a terme elle gerera automatiquement l'update de donnees si la ligne existe deja.
+## save(array $data) ##
+Si la variable $id du model existe, alors la fonction exécute un updateById($this->$id, $data). Dans le cas contraire save() créera une nouvelle ligne en base de données. Pour cette raison il est préférable d'utiliser la méthode **create()** avant un save si l'objectif est de créer une nouvelle entrée.
 
-----> exemple :
+Le paramètre $data est requis et contient les champs a ajouter/éditer et leur valeurs comme suit.
+
+
+```
+#!php
+
 $c->Card->save(array(
-    'email' => 'testsave@gmail.com',
+    'email' => "'testsave@gmail.com'",
     'name' => 'Kevin',
     'blabla' => 'blabla
 ));
+```
+
 
 To be continued. PEACE.
