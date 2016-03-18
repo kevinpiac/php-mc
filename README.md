@@ -69,18 +69,17 @@ Verifs->wathever()
 ```
 
 
-Convention de nommage :
-----------------------------
+### Conventions de nommage (généralité): ###
+
 - Une table de base de donnée doit avoir un nom explicite.
 - Un nom de table est toujours écrit au pluriel et en minuscule. 
 - De préference en anglais pour facilier les pluriels. 
-- Un nom de model prend le nom de sa table **MAIS au singulier**, avec **une lettre majuscul**e au début. 
---> exemple: 
-la tables "**cards**", permet de lister les fiches. Le model correspondant se nome "**Card**". 
 - Chaque nom de class (objet) doit commencer par une majuscule (y compris le nom du fichier). 
---> exemple:
-la class **Model** dans **Model.php**, la class **Card** dans **Card.php**
+* * --> exemple: la class **Model** dans **Model.php**, la class **Card** dans **Card.php**
 
+### Nommage des models ###
+*Un nom de model prend le nom de sa table **MAIS au singulier**, avec **une lettre majuscul**e au début. 
+* * --> exemple: la tables "**cards**", permet de lister les fiches. Le model correspondant se nome "**Card**". 
 
 
 
