@@ -8,9 +8,9 @@
 /config
    Database.php
 /controller
-   Cards.php
+   ControllerName.php
 /model
-   Card.php
+   ModelName.php
 /core
    Controller.php
    Model.php
