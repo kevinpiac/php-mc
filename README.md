@@ -1,6 +1,10 @@
 *Dernière mise à jour le 18/03/2016*
 #Arborescence du projet#
 
+
+```
+#!php
+
 * /config
 * * Database.php
 * /controller
@@ -14,6 +18,8 @@
 * * Router.php
 * /webroot
 * * index.php
+```
+
 
 Structuration technique du projet
 =======================
