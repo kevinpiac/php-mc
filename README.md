@@ -145,7 +145,7 @@ $params = array(
       'name'  => 'asc'
     )
 );
-$res = $this->ModelName->find($params);
+$res = $c->ModelName->find($params);
 ```
 Plus le tableau est complet plus la requête est précise. Dans le cas ou aucun champ n'est précisé le comportement de la fonction sera :
 ```
@@ -200,5 +200,37 @@ $c->Card->save(array(
 ));
 ```
 
+## create() ##
+Lorsqu'une recherche est faite (avec les methodes findFirst(), findById()), si l'id du champ est récupéré par le model, alors la valeur de l'id du model est défini a la valeur de l'id du champ. Exemple :
 
-To be continued. PEACE.
+
+```
+#!php
+
+$c->ModelName->id // au début cette valeur est null.
+$res = $c->ModelName->findFirst(array(
+    'fields' => array('id', 'email')
+));
+// imaginons que $res->id est egal a 4, alors :
+$c->$ModelName->id // est égal a 4.
+```
+Cela implique qu'en cas de tentative de sauvegarde avec save() apres un findFirst(), un id sera 'set', donc aucun champ ne sera crée. Reprenons l'exemple :```
+#!php
+
+$c->ModelName->id // au début cette valeur est null.
+$res = $c->ModelName->findFirst(array(
+    'fields' => array('id', 'email')
+));
+// imaginons que $res->id est egal a 4, alors :
+$c->$ModelName->id // est égal a 4.
+$c->save($data) // ici le save renvera un updateById() car l'id est défini. 
+```
+Pour être certain d'empêcher ce comportement nous utilisons donc la methode create() qui 'reset' l'id du Model a null. Ainsi : 
+```
+#!php
+
+// ici $c->ModelName->id est égal 4.
+$c->create();
+$c->$ModelName->id // ici la valeur est null
+$c->$ModelName->save($data) // on est sur de créer une nouvelle entrée.
+```
