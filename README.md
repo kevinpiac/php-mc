@@ -90,9 +90,9 @@ includes.php // Il ne s'agit pas d'une class php, donc minuscule.
 * * --> exemple: la tables "**cards**", permet de lister les fiches. Le model correspondant se nome "**Card**". 
 
 
-======================
-# LES MODELS #        |
-======================
+==================
+**LES MODELS**        |
+==================
 
 Introduction
 ---------------------------
