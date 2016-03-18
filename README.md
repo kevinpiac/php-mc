@@ -12,13 +12,13 @@
 /model
    Card.php
 /core
-* * Controller.php
-* * Model.php
-* * includes.php
-* * ShellRouter.php
-* * Router.php
-* /webroot
-* * index.php
+   Controller.php
+   Model.php
+   includes.php
+   ShellRouter.php
+   Router.php
+/webroot
+   index.php
 ```
 
 
