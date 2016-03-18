@@ -14,7 +14,7 @@ $params = array(
     'fields' => array(
         'email',
         'actif',
-        'desabo'
+        'id'
     ),
     'conditions' => array(
         'id' => '>= 2'
@@ -25,12 +25,19 @@ $params = array(
     ),
 );
 
-// NEED TO SET THE $this->id WHEN UPDATING AND FINDING INFO.
+print_r("BEFORE : \n this id ->".$c->Card->id."\n");
 
-$res = $c->Card->findById(4);
+$res = $c->Card->findFirst($params);
 print_r($res);
+print_r("this id ->".$c->Card->id);
 
-$c->Card->updateById(4, array('email' => "'blabla'"));
+$c->Card->save(array('email' => '"coucou"'));
 
-$res = $c->Card->findById(4);
+$res = $c->Card->findFirst($params);
+print_r($res);
+print_r("this id ->".$c->Card->id);
+
+$c->Card->create();
+$c->Card->save(array("email" => "'test'", 'id' => '999999'));
+$res = $c->Card->findById(999999);
 print_r($res);
