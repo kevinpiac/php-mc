@@ -7,6 +7,7 @@ define('CORE', ROOT.DS.'core');
 define('CONFIG', ROOT.DS.'config');
 
 require(CORE.DS.'includes.php');
+
 /*
 $c = new Controller();
 $c->loadModel('Card');
@@ -46,12 +47,13 @@ print_r($res);
 $router = new ShellRouter($argc, $argv);
 print_r("Ctrl ->".$router->controller."\n");
 print_r("Action ->".$router->action."\n");
-foreach ($router->params as $param)
+/*foreach ($router->params as $param)
 {
     print_r("Param ->".$param."\n");
 }
 
 $c = new Controller();
-$c->loadController($router->controller);
-
-$c->($router->action)();
+$cards = $c->loadController($router->controller);
+$action = $router->action;
+$cards->$action($router->params);
+*/

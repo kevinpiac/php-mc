@@ -4,7 +4,7 @@ class Model
 {
     static $connections = array();
 
-    public $conf = 'test';
+    public $conf = 'vpsKevin';
     public $db;
     public $table = false;
     public $debug = true;
@@ -62,7 +62,33 @@ class Model
 
     public function findFirst($params)
     {
-        return (current($this->find($params)));
+        $res = current($this->find($params));
+        if (isset($res->id))
+            $this->id = $res->id;
+        return ($res);
+    }
+
+    public function findById($id, $fields = null)
+    {
+        if (!empty($fields))
+        {
+            $res = $this->findFirst(array(
+                'conditions' => array(
+                    'id' => '= '.$id
+                ),
+                'fields' => $fields
+            ));
+        }
+        else
+        {
+            $res = $this->findFirst(array(
+                'conditions' => array(
+                    'id' => '= '.$id
+                )
+            ));
+        }
+        $this->id = $id;
+        return ($res);
     }
 
     public function save($data)
@@ -88,6 +114,46 @@ class Model
             $pre->execute($data);
         }
         else
-            echo ("this->id : ". $this->id);
-    }    
+            $this->updateById($this->id, $data);
+    }
+
+    public function create()
+    {
+        if (isset($this->id))
+            $this->id = null;
+    }
+    
+    public function update($params)
+    {
+        $req = 'UPDATE '.$this->table.' SET ';
+        foreach ($params['fields'] as $f => $v)
+        {
+            $req .= $f.' = :'.$f.', ';
+        }
+        $req = substr($req, 0, -2);
+        $req .= ' WHERE ';
+        foreach ($params['conditions'] as $k => $v)
+        {
+            $req .= $k. ' '. $v. ' AND ';
+        }
+        $req = substr($req, 0, -5);
+        if ($this->debug == true)
+            print_r($req);
+        $pre = $this->db->prepare($req);
+        $pre->execute($params['fields']);
+    }
+
+    public function updateById($id, $fields)
+    {
+        $cond = array(
+            'conditions' => array(
+                'id' => '= '.$id
+            )
+        );
+        $fields = array(
+            'fields' => $fields
+        );
+        $params = array_merge($cond, $fields);
+        $this->update($params);
+    }
 }
