@@ -214,7 +214,8 @@ $res = $c->ModelName->findFirst(array(
 // imaginons que $res->id est egal a 4, alors :
 $c->$ModelName->id // est égal a 4.
 ```
-Cela implique qu'en cas de tentative de sauvegarde avec save() apres un findFirst(), un id sera 'set', donc aucun champ ne sera crée. Reprenons l'exemple :```
+Cela implique qu'en cas de tentative de sauvegarde avec save() apres un findFirst(), un id sera 'set', donc aucun champ ne sera crée. Reprenons l'exemple :
+```
 #!php
 
 $c->ModelName->id // au début cette valeur est null.
