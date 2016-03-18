@@ -129,6 +129,7 @@ $c->Card->maMethode();
 
 ## find([$params]) ##
 
+La méthode find() permet de récupérer des données. Elle acceptent un tableau (facultatif) en paramètre. Ce tableau peut contenir les champs a récupérer, les conditions de recherche (WHERE), la limit et l'ordre, comme suit.
 
 ```
 #!php
@@ -144,6 +145,12 @@ $params = array(
       'name'  => 'asc'
     )
 );
+```
+Plus le tableau est complet plus la requête est précise. Dans le cas ou aucun champ n'est précisé le comportement de la fonction sera un 
+```
+#!php
+
+SELECT * FROM tableName as ModelName
 ```
 
 
