@@ -110,7 +110,7 @@ class Card extends Model
 }
 ```
 
-**Important :** model **héritera toujours** de la class Model.
+**Important :** un model **héritera toujours** de la class Model.
 
 ## Utilisation ##
 
@@ -125,7 +125,7 @@ $c->Card->maMethode();
 ```
 ---------------------------------------------
 
-Recuperer des donnees
+## Methodes heritees de model ##
 -----------------------------------------------
 **La methode find([array $data]).**
 Tous les models heritent de cette methode. Elle peut prendre un array en parametre, mais cela reste facultatif. Pour le moment les parametres supportes sont les suivantes : 
