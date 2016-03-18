@@ -183,6 +183,7 @@ Effectue un findFirst() avec l'id passe en paramètre ($id). Le paramètre $fiel
 $res = $this->ModelName->findById(12, array('email', 'age', 'name')) // récupère les champs 'email', 'age' et 'active' pour l'entrée ayant l'id égal a 12.
 ```
 
+# Sauvegarder des données #
 
 ## save(array $data) ##
 Si la variable $id du model existe, alors la fonction exécute un updateById($this->$id, $data). Dans le cas contraire save() créera une nouvelle ligne en base de données. Pour cette raison il est préférable d'utiliser la méthode **create()** avant un save si l'objectif est de créer une nouvelle entrée.
@@ -234,4 +235,24 @@ Pour être certain d'empêcher ce comportement nous utilisons donc la methode cr
 $c->create();
 $c->$ModelName->id // ici la valeur est null
 $c->$ModelName->save($data) // on est sur de créer une nouvelle entrée.
+```
+
+## update(array $params) ##
+
+Permet de modifier une entrée en lui passant les champs a modifier et leurs nouvelles valeurs. Voici un exemple de requête avec les paramètre acceptes :
+
+
+```
+#!php
+
+$c->ModelName->update(array(
+    'fields' => array(
+        'email' => "'newemail@gmail.com'", // je modifie mon champ email
+        'active' => '0', // et le champ active.
+     ),
+    'conditions' => array(
+        'email' => "= 'match@gmail.com'", // WHERE email = "match@gmail.com"
+        'active' => '= 0' // AND active = 0
+     )
+));
 ```
