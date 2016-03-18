@@ -47,10 +47,10 @@ Le projet fonctionne selon une architecture Model - Controlleur. Les models sont
 
 Convention de nommage :
 ----------------------------
-- Une table de base de donnee doit avoir un nom explicite.
-- Un nom de table est toujours ecrit au pluriel et en minuscule. 
-- De preference en anglais pour facilite les pluriels. 
-- Une nom de model prend le nom de sa table MAIS au singulier, avec une lettre majuscule au debut. 
+- Une table de base de donnée doit avoir un nom explicite.
+- Un nom de table est toujours écrit au pluriel et en minuscule. 
+- De préference en anglais pour facilier les pluriels. 
+- Un nom de model prend le nom de sa table **MAIS au singulier**, avec **une lettre majuscul**e au début. 
 --> exemple: 
 la tables "**cards**", permet de lister les fiches. Le model correspondant se nome "**Card**". 
 - Chaque nom de class (objet) doit commencer par une majuscule (y compris le nom du fichier). 
