@@ -81,7 +81,7 @@ Verifs->wathever()
 
 Model.php //Il s'agit d'un fichier contenant une class php (donc CamelCase.).
 ShellRouter.php // Pareil.
-includes.php // Il ne s'agit pas d'une class php, donc miniscule.
+includes.php // Il ne s'agit pas d'une class php, donc minuscule.
 ```
 
 
