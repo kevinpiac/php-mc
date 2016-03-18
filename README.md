@@ -91,7 +91,7 @@ includes.php // Il ne s'agit pas d'une class php, donc minuscule.
 
 
 
-** # LES MODELS # ** 
+# ** # LES MODELS # ** # 
 ======================
 
 Introduction
