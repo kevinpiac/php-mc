@@ -172,6 +172,18 @@ foreach ($res as $k => $v)
 ## findFirst([array $params]) ##
 Fonctionne exactement de la même manière que find() sauf qu'elle retourne le premier élément trouvé.
 
+
+## findById($id, array [$fields]) ##
+Effectue un findFirst() avec l'id passe en paramètre ($id). Le paramètre $fields est facultatif. Si $fields n'est pas passé, alors la fonction récupérera tous les champs. Exemple de requête :
+
+
+```
+#!php
+
+$res = $this->ModelName->findById(12, array('email', 'age', 'name')) // récupère les champs 'email', 'age' et 'active' pour l'entrée ayant l'id égal a 12.
+```
+
+
 ## save(array $data) ##
 Si la variable $id du model existe, alors la fonction exécute un updateById($this->$id, $data). Dans le cas contraire save() créera une nouvelle ligne en base de données. Pour cette raison il est préférable d'utiliser la méthode **create()** avant un save si l'objectif est de créer une nouvelle entrée.
 
