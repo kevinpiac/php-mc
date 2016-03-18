@@ -28,12 +28,13 @@
 ```
 
 
-Structuration technique du projet
-=======================
+#Structuration technique du projet#
 
+## Rappel ##
 
-Convention de structure :
----------------------------
+Le projet fonctionne selon une architecture Model - Controlleur. Les models sont des classes d'abstraction de base de donnée. En d'autres termes ils permettent de gérer l'ensemble des connexion / requêtes à la base de donnée. Les controlleurs, eux, représentent le "cerveau" du projet. Ce sont eux qui seront en charge du traitement des informations et du fonctionnement du projet.
+
+## Convention de structure : ##
 - Un model correspond a une table en base de donnee.
 - Un model se trouve dans le dossier [root]/model/[Nom.php]
 
