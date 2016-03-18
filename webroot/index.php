@@ -24,8 +24,13 @@ $params = array(
         'email' => ''
     ),
 );
-//$res = $c->Card->findFirst($params);
-print_r("\n");
-//print_r("this id : ".$c->Card->id);
-print_r("\n");
-$res = $c->Card->findById('4');
+
+// NEED TO SET THE $this->id WHEN UPDATING AND FINDING INFO.
+
+$res = $c->Card->findById(4);
+print_r($res);
+
+$c->Card->updateById(4, array('email' => "'blabla'"));
+
+$res = $c->Card->findById(4);
+print_r($res);
