@@ -256,3 +256,13 @@ $c->ModelName->update(array(
      )
 ));
 ```
+
+## updateById($id, array $fields) ##
+
+Cette fonction fait un update() avec la condition 'id' => '= $id'. et modifie les champs et leurs valeurs passés dans $fields.
+
+
+--------------------------------------------------
+# ---------------------- LES CONTROLLERS ---------------------- #
+
+To be continued.
