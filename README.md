@@ -125,9 +125,28 @@ $c->Card->maMethode();
 ```
 ---------------------------------------------
 
-## Methodes heritees de model ##
------------------------------------------------
-**La methode find([array $data]).**
+# Récupérer des données #
+
+## find([$params]) ##
+
+
+```
+#!php
+$params = array(
+   'fields' => array('id', 'email'),
+   'conditions' => array(
+      'email' => "= 'example@gmail.com'",
+      'age'   => 'BETWEEN 18 AND 39'
+    ),
+   'limit' => 10,
+   'order' => array(
+      'email' => 'desc',
+      'name'  => 'asc'
+    )
+);
+```
+
+
 Tous les models heritent de cette methode. Elle peut prendre un array en parametre, mais cela reste facultatif. Pour le moment les parametres supportes sont les suivantes : 
 - fields *// array contenant les champs que l'on souhaite recuperer*
 - conditions *// array contenant les conditions (equivaut a WHERE)*
