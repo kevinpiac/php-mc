@@ -22,6 +22,8 @@
 /js
    account_gen.js
    token_gen.js
+   token_get.js
+   facebook.js
 
 ```
 
