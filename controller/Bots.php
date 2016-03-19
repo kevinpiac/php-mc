@@ -19,7 +19,27 @@ class Bots extends Controller
     public function activeToken()
     {
         $this->loadModel('Card');
-        $this->Card->findByQuery("SELECT * FROM Card");
+        $accounts = $this->Card->findByQuery("SELECT * FROM Card");
+        // add the real query above. This query should select the account to activate.
+
+        foreach ($accounts as $ac)
+        {
+            $to_exec = "/usr/local/bin/casperjs ../js/token_gen.js " . $ac->email. " " . $ac->password. " --proxy=". $ac->ip." --proxy-auth=mrsoyer:tomylyjon";
+            echo(exec($to_exec));
+        }
     }
-    
+
+    public function saveToken()
+    {
+        // WHAT I WANT TO WRITE :
+
+        $this->loadModel('Bot');
+        $this->Bot->find('conditions here')->contain('Table');
+        
+    }
+
+    public function resetToken()
+    {
+        
+    }
 }
