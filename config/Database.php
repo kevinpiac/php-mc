@@ -13,7 +13,7 @@ class Database
             'host'      => 'localhost',
             'db_name'   => 'sym',
             'user'      => 'root',
-            'password'  => 'nt84qiNU'
+            'password'  => '8iCwaQ2G'
         )
     );
 }

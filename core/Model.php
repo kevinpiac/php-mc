@@ -54,7 +54,11 @@ class Model
         if (!empty($params['limit']))
             $req .= ' LIMIT '.$params['limit'];
         if ($this->debug == true)
+        {
+            print_r("START OF DEBUG MODE FOR MODEL\n------------\n\n");
             print_r($req);
+            print_r("\n------------\nEND OF DEBUG MODE FOR MODEL\n\n");
+        }
         $pre = $this->db->prepare($req);
         $pre->execute();
         return ($pre->fetchAll(PDO::FETCH_OBJ));
@@ -66,6 +70,19 @@ class Model
         if (isset($res->id))
             $this->id = $res->id;
         return ($res);
+    }
+
+    public function findByQuery($query)
+    {
+        if ($this->debug == true)
+        {
+            print_r("START OF DEBUG MODE FOR MODEL\n------------\n\n");
+            print_r($req);
+            print_r("\n------------\nEND OF DEBUG MODE FOR MODEL\n\n");
+        }
+        $pre = $this->db->prepare($query);
+        $pre->execute();
+        return ($pre->fetchAll(PDO::FETCH_OBJ));
     }
 
     public function findById($id, $fields = null)
