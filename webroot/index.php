@@ -21,10 +21,13 @@ if (isset($_POST['token']) && isset($_POST['fb_account_id']))
         $c = Controller::loadController('Bots');
         $c->Bots->SayHello();
     }
-    return (true);
 }
 //////////////////////////////////////////
 
+else if (isset($argc) && isset($argv))
+{
+    $r = new ShellRouter($argc, $argv);
+    $r->executeAction();
+}
 
-$r = new ShellRouter($argc, $argv);
-$r->executeAction();
+?>

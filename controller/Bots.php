@@ -18,6 +18,7 @@ class Bots extends Controller
 
     public function activeToken()
     {
+        // add where conditions bellow
         $this->loadModel('FbAccount');
         $accounts = $this->FbAccount->find(array(
             'fields' => array(
@@ -39,6 +40,7 @@ class Bots extends Controller
             $c->generateToken($account);
             $c->getToken($account);
         }
+        print_r($accounts);
     }
 
     public function saveToken($params)
