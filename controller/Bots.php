@@ -41,13 +41,16 @@ class Bots extends Controller
         }
     }
 
-    public function saveToken()
+    public function saveToken($params)
     {
-        // WHAT I WANT TO WRITE :
-
-        $this->loadModel('Bot');
-        $this->Bot->find('conditions here')->contain('Table');
-        
+        $token = $params[0];
+        $account_id = $params[1];
+        $this->loadModel('FbAccount');
+        $this->FbAccount->updateById($account_id, array(
+            'token' => $token,
+            'active' => 1,
+            'token_alive' => 1
+        ));
     }
 
     public function resetToken()

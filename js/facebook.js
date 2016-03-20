@@ -79,7 +79,7 @@ var getToken = function(casper, fb_account_id){
 	var token = casper.getCurrentUrl();
 	token = token.match("token=" + "(.*?)" + "&")[1];
 	casper.echo("Folowing token was saved: " + token);
-	casper.thenOpen("http://localhost:8888/sym/phpfiles/save_token.php", {
+	casper.thenOpen("http://localhost:8888/sym/webroot/index.php", {
 		method: 'post',
 		data: {
 			'token': token,

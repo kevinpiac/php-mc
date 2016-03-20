@@ -17,8 +17,8 @@ if (!empty($token) && !empty(fb_account_id))
 			  'active' => 1,
 			  'token_alive' => 1
 		      )
- );
- $sql = null;
+  );
+$sql = null;
 }
  echo ("hello bitch!");
 ?>
