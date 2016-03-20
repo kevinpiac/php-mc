@@ -125,7 +125,7 @@ class Model
         {
             $res = $this->findFirst(array(
                 'conditions' => array(
-                    'id' => '= '.$id
+                    'id =' => $id
                 ),
                 'fields' => $fields
             ));
@@ -134,7 +134,7 @@ class Model
         {
             $res = $this->findFirst(array(
                 'conditions' => array(
-                    'id' => '= '.$id
+                    'id =' => $id
                 )
             ));
         }
@@ -185,7 +185,10 @@ class Model
         $req .= ' WHERE ';
         foreach ($params['conditions'] as $k => $v)
         {
-            $req .= $k. ' '. $v. ' AND ';
+            if (!is_numeric($k))
+                $req .= $k. ' ' .'\''.$v.'\''. ' AND ';
+            else
+                $req .= $v. ' AND ';                    
         }
         $req = substr($req, 0, -5);
         if ($this->debug == true)
@@ -198,7 +201,7 @@ class Model
     {
         $cond = array(
             'conditions' => array(
-                'id' => '= '.$id
+                'id =' => $id
             )
         );
         $fields = array(

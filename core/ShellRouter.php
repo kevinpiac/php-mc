@@ -20,7 +20,7 @@ class ShellRouter {
     ////////////// PASSER LOAD CONTROLLER EN STATIC
     public function __construct($ac, $av)
     {
-        $this->controller = $av[1];
+        $this->controller = ucfirst($av[1]);
         if (empty($av[2]))
             $this->action = 'index';
         else

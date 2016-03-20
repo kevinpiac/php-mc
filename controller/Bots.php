@@ -20,27 +20,25 @@ class Bots extends Controller
     {
         $this->loadModel('FbAccount');
         $accounts = $this->FbAccount->find(array(
-            'fields' => array('FbAccount.email'),
-            'join' => array(
-                'table' => 'proxys',
-                'model' => 'Proxy',
-                'fields' => array('Proxy.ip', 'Proxy.expire'),
-                'on' => array(
-                    'id =' => 'coucou'
-                )
+            'fields' => array(
+                'FbAccount.id',
+                'FbAccount.password',
+                'FbAccount.email',
+                'Proxy.ip'
             ),
-            ));
+            'join' => array(
+                'model' => 'Proxy',
+                'table' => 'proxys',
+                'on' => array('FbAccount.proxy_id = Proxy.id')
+            )
+        ));
 
-
-        $id = 3;
-            $accounts = $this->FbAccount->find(array(
-                'fields' => array('email'),
-                'conditions' => array(
-                    'id =' => $id,
-                    'id = (0 + 1)',
-                )
-            ));
-            //        print_r($accounts);
+        foreach ($accounts as $account)
+        {
+            $c = Controller::loadController('Caspers');
+            $c->generateToken($account);
+            $c->getToken($account);
+        }
     }
 
     public function saveToken()
