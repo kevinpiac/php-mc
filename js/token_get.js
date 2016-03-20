@@ -1,7 +1,7 @@
 var facebook = require('facebook.js');
 var casper = require('casper').create({
-	verbose: false,
-//	logLevel: "debug"
+	verbose: true,
+	logLevel: "debug"
 });
 var user = {
 	'email': casper.cli.get(0),

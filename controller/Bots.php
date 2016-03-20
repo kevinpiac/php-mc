@@ -25,21 +25,20 @@ class Bots extends Controller
                 'FbAccount.id',
                 'FbAccount.password',
                 'FbAccount.email',
-                'Proxy.ip'
             ),
-            'join' => array(
-                'model' => 'Proxy',
-                'table' => 'proxys',
-                'on' => array('FbAccount.proxy_id = Proxy.id')
+            'conditions' => array(
+                'active = 0'
             )
+            // add inner join here.
         ));
+
         foreach ($accounts as $account)
         {
             $c = Controller::loadController('Caspers');
             $c->generateToken($account);
-            $c->getToken($account);
+            $c->getToken($account);    
         }
-        print_r($accounts);
+              print_r($accounts);
     }
 
     public function saveToken($params)
@@ -49,9 +48,10 @@ class Bots extends Controller
         $this->loadModel('FbAccount');
         $this->FbAccount->updateById($account_id, array(
             'token' => $token,
-            'active' => 1,
-            'token_alive' => 1
+            'active' => '1',
+            'token_alive' => '1'
         ));
+        
     }
 
     public function resetToken()
