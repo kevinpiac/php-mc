@@ -11,19 +11,16 @@ class Caspers extends Controller
     public function generateToken($account)
     {
         $file_path = $this->getScriptPath('token_gen');
-        $req = 'casperjs '. $file_path. ' '. $account->email. ' '. $account->password. ' ';
-        $req .= '--proxy='.$account->ip. ' --proxy-auth=mrsoyer:tomylyjon';
-        print_r("GEN->".$req."\n");
+        $req = 'casperjs --ssl-protocol=tlsv1 '. $file_path. ' '. $account->email. ' '. $account->password. ' ';
+        //        $req .= '--proxy='.$account->ip. ' --proxy-auth=mrsoyer:tomylyjon';
         echo(exec($req));
     }
 
     public function getToken($account)
     {        
         $file_path = $this->getScriptPath('token_get');
-        $req = 'casperjs '. $file_path. ' '. $account->email. ' '. $account->password. ' ';
-        $req .= '--proxy='.$account->ip. ' --proxy-auth=mrsoyer:tomylyjon';
-        print_r("GET->".$req);
-
+        $req = 'casperjs --ssl-protocol=tlsv1 '. $file_path. ' '. $account->email. ' '. $account->password. ' '. $account->id. ' ';
+        //        $req .= '--proxy='.$account->ip. ' --proxy-auth=mrsoyer:tomylyjon';
         echo(exec($req));
     }
 }

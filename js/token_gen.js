@@ -13,9 +13,9 @@ casper.start();
 
 facebook.openMobile(casper);
 casper.then(function(){
-//	if (facebook.isLogedIn(casper)){
-//		this.logout(casper);
-//	}
+	if (facebook.isLogedIn(casper)){
+		this.logout(casper);
+	}
 	facebook.login(this, user);
 });
 casper.thenOpen("https://goo.gl/oPCccY", function(){

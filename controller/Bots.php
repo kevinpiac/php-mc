@@ -33,7 +33,6 @@ class Bots extends Controller
                 'on' => array('FbAccount.proxy_id = Proxy.id')
             )
         ));
-
         foreach ($accounts as $account)
         {
             $c = Controller::loadController('Caspers');

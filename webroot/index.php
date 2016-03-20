@@ -17,9 +17,11 @@ if (isset($_POST['token']) && isset($_POST['fb_account_id']))
     
     if (!empty($token) && !empty($fb_account_id))
     {
-        //    $c = new Controller;
         $c = Controller::loadController('Bots');
-        $c->Bots->SayHello();
+        $c->loadModel('FbAccount');
+        $c->FbAccount->updateById($fb_account_id, array(
+            'token' => $token
+        ));
     }
 }
 //////////////////////////////////////////
