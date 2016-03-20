@@ -11,9 +11,9 @@ class Database
         ),
         'vpsKevin' => array(            
             'host'      => 'localhost',
-            'db_name'   => 'sym',
-            'user'      => 'root',
-            'password'  => '8iCwaQ2G'
+            'db_name'   => 'scrapyomamma',
+            'user'      => 'sym',
+            'password'  => 'tHrl92^2'
         )
     );
 }

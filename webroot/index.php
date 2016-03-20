@@ -9,5 +9,4 @@ define('CONFIG', ROOT.DS.'config');
 require(CORE.DS.'includes.php');
 
 $r = new ShellRouter($argc, $argv);
-
 $r->executeAction();

@@ -3,6 +3,7 @@
 class Card extends Model
 {
 	public $table = 'cards';
+    public $debug = true;
 
 	public function hello()
 	{

@@ -28,17 +28,51 @@ class Model
 
     public function find($params)
     {
-        if (!empty($params['fields']))
-            $fields = implode(", ",$params['fields']);
+        if (!empty($params['fields']) || !empty($params['join']['fields']))
+        {
+            if (!empty($params['fields']))
+            {
+                $fields = $params['fields'];
+                foreach ($fields as $k => $v)
+                    $fields[$k] = $v;
+                $fields = implode(", ",$fields);
+            }
+
+            if (!empty($params['join']['fields']))
+            {
+                $joinFields = $params['join']['fields'];
+                foreach ($joinFields as $k => $v)
+                {
+                    $joinFields[$k] = $v;
+                }
+                $joinFields = implode(", ", $joinFields);
+                $joinFields = ", ".$joinFields;
+                $fields .= $joinFields;
+            }
+        }
         else
             $fields = '*';
-        $req = 'SELECT ' .$fields. ' FROM '.$this->table. ' as ' .get_class($this). '';
+        $req = 'SELECT ' .$fields. ' FROM '.$this->table. ' as '. get_class($this) . '';
+        if (!empty($params['join']))
+        {
+            $req .= ' INNER JOIN '. $params['join']['table']. ' as '. $params['join']['model'].' ON ';
+            foreach ($params['join']['on'] as $k => $v)
+            {
+                if (!is_numeric($k))
+                    $req .= $k.' '.'\''.$v.'\'';
+                else
+                    $req .= $v;
+            }
+        }
         if (!empty($params['conditions']))
         {
             $req .= ' WHERE ';
             foreach ($params['conditions'] as $k => $v)
             {
-                $req .= $k. ' ' .$v. ' AND ';
+                if (!is_numeric($k))
+                    $req .= $k. ' ' .'\''.$v.'\''. ' AND ';
+                else
+                    $req .= $v. ' AND ';                    
             }
             $req = substr($req, 0, -4);
         }

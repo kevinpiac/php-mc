@@ -6,27 +6,41 @@ class Bots extends Controller
     {
         if (!empty($params))
         {
-            echo "Hello! Params are : ";
+            print_r("Hello! Params are :\n");
             foreach ($params as $param)
-                echo $param. " ";
+                print_r($param. " \n");
         }
         else
         {
-            echo "Are you kiding me bro ? You passed no param...";
+            print_r("Are you kiding me bro ? You passed no param...\n");
         }
     }
 
     public function activeToken()
     {
-        $this->loadModel('Card');
-        $accounts = $this->Card->findByQuery("SELECT * FROM Card");
-        // add the real query above. This query should select the account to activate.
+        $this->loadModel('FbAccount');
+        $accounts = $this->FbAccount->find(array(
+            'fields' => array('FbAccount.email'),
+            'join' => array(
+                'table' => 'proxys',
+                'model' => 'Proxy',
+                'fields' => array('Proxy.ip', 'Proxy.expire'),
+                'on' => array(
+                    'id =' => 'coucou'
+                )
+            ),
+            ));
 
-        foreach ($accounts as $ac)
-        {
-            $to_exec = "/usr/local/bin/casperjs ../js/token_gen.js " . $ac->email. " " . $ac->password. " --proxy=". $ac->ip." --proxy-auth=mrsoyer:tomylyjon";
-            echo(exec($to_exec));
-        }
+
+        $id = 3;
+            $accounts = $this->FbAccount->find(array(
+                'fields' => array('email'),
+                'conditions' => array(
+                    'id =' => $id,
+                    'id = (0 + 1)',
+                )
+            ));
+            //        print_r($accounts);
     }
 
     public function saveToken()
