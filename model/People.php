@@ -17,7 +17,31 @@ class People extends Model
                  activity.status = 2
                 ORDER BY activity");
         */
-        $laters = $this->find();
+        $laters = $this->find([
+            'fields' => [
+                'People.id',
+                'People.email',
+                'PeopleProfile.firstname',
+                'PeopleProfile.lastname'
+            ],
+            'joins' => [
+                [
+                    'table' => 'PeopleProfile',
+                    'model' => 'PeopleProfile',
+                    'on' => ['PeopleProfile.people_id = People.id']
+                ],
+                [
+                    'table' => 'PeopleActivity',
+                    'model' => 'PeopleActivity',
+                    'on' => ['PeopleActivity.people_id = People.id']
+                ],
+            ],
+            'conditions' => [
+                'People.unsubscribe = 0',
+                'PeopleActivity.status = 2',
+                
+            ]
+        ]);
         return ($laters);
     }
 }

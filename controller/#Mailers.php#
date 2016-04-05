@@ -11,5 +11,6 @@ class Mailers extends Controller
 
         $people = $this->People->getToShoot();
         print_r($people);
+
     }
 }
