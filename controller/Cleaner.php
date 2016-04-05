@@ -18,12 +18,27 @@ class Cleaner extends Controller
         return $urls;
     }
 
-    public function cleanEmailsWithFacebook($email)
+    public function getFacebookIds()
     {
+        // Maybe add Curl open graph here for more consistence.
         $proxy = 'http://163.172.247.174:80'; // Modify the getting way here.
         $urls = $this->getEmailsToClean();
         require ROOT.'/controller/Curl.php';
         $res = Curl::CurlOpenGraph($urls, $proxy);
-          print_r($res);
+
+        //$res = $this->checkFacebookResult($res);
+        print_r($res);
+        return ($res);
+    }
+
+    public function checkFacebookResult($result)
+    {
+        $res = [];
+
+        foreach ($result as $k => $v)
+        {
+            if (!empty($v['id']))
+                array_push($res, $k);
+        }
     }
 } 

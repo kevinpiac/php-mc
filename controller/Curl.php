@@ -95,11 +95,19 @@ class Curl extends Controller
         foreach ($ret as $k => $v)
         {
             $data = json_decode($v['curl_result']);
-            $arr = [
-                'email' => $v['email'],
-                'name'  => $data->data[0]->name,
-                'id'    => $data->data[0]->id
-            ];
+            // si une erreur survient on set le champ 'error' a 1 et on indique un message.
+            if (isset($data->error))
+                $arr = ['error' => 1, 'message' => $data->error->message];
+            else if (isset($data->data[0]))
+            {
+                $arr = [
+                    'email' => $v['email'],
+                    'name'  => $data->data[0]->name,
+                    'id'    => $data->data[0]->id
+                ];
+            }
+            else
+                $arr = ['error' => 1];
             array_push($res, $arr);
         }
         return ($res);
