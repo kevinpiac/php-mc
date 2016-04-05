@@ -64,6 +64,20 @@ class Model
                     $req .= $v;
             }
         }
+        else if (!empty($params['joins']))
+        {
+            foreach ($params['joins'] as $j)
+            {
+                $req .= ' INNER JOIN '. $j['table']. ' as '. $j['model'].' ON ';
+                foreach ($j['on'] as $k => $v)
+                {
+                    if (!is_numeric($k))
+                        $req .= $k.' '.'\''.$v.'\'';
+                    else
+                        $req .= $v;
+                }
+            }
+        }
         if (!empty($params['conditions']))
         {
             $req .= ' WHERE ';
