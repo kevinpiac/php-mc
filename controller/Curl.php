@@ -97,7 +97,7 @@ class Curl extends Controller
             $data = json_decode($v['curl_result']);
             // si une erreur survient on set le champ 'error' a 1 et on indique un message.
             if (isset($data->error))
-                $arr = ['error' => 1, 'message' => $data->error->message];
+                $arr = ['error' => 1, 'token_error' => 1, 'message' => $data->error->message];
             else if (isset($data->data[0]))
             {
                 $arr = [
@@ -107,7 +107,7 @@ class Curl extends Controller
                 ];
             }
             else
-                $arr = ['error' => 1];
+                $arr = ['error' => 1, 'email_error' => 1];
             array_push($res, $arr);
         }
         return ($res);

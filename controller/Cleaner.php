@@ -25,8 +25,8 @@ class Cleaner extends Controller
         $urls = $this->getEmailsToClean();
         require ROOT.'/controller/Curl.php';
         $res = Curl::CurlOpenGraph($urls, $proxy);
-
-        //$res = $this->checkFacebookResult($res);
+   print_r($res);
+        $res = $this->checkFacebookResult($res);
         print_r($res);
         return ($res);
     }
