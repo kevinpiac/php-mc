@@ -90,26 +90,6 @@ class Curl extends Controller
             array_push($ret, ['curl_result' => $json, "email" => $v['email']]);
         }
         curl_close($curl);
-        // traitement du json pour un retour plus propre.
-        $res = [];
-        foreach ($ret as $k => $v)
-        {
-            $data = json_decode($v['curl_result']);
-            // si une erreur survient on set le champ 'error' a 1 et on indique un message.
-            if (isset($data->error))
-                $arr = ['error' => 1, 'token_error' => 1, 'message' => $data->error->message];
-            else if (isset($data->data[0]))
-            {
-                $arr = [
-                    'email' => $v['email'],
-                    'name'  => $data->data[0]->name,
-                    'id'    => $data->data[0]->id
-                ];
-            }
-            else
-                $arr = ['error' => 1, 'email_error' => 1];
-            array_push($res, $arr);
-        }
-        return ($res);
+        return ($ret);
     }
 }

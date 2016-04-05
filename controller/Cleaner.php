@@ -1,5 +1,7 @@
 <?php
 
+require ROOT.'/controller/Curl.php';
+
 class Cleaner extends Controller
 {
 
@@ -26,17 +28,52 @@ class Cleaner extends Controller
 
     public function getFacebookIds()
     {
-        // Maybe add Curl open graph here for more consistence.
         $proxy = 'http://163.172.247.174:80'; // Modify the getting way here.
         $urls = $this->getEmailsToClean();
-        require ROOT.'/controller/Curl.php';
-        $res = Curl::CurlOpenGraph($urls, $proxy);
-
+        $ret = Curl::CurlOpenGraph($urls, $proxy);
+        // on recupere le resultat de l'openGraph et on le formate dans un joli tableau :D 
+        $res = [];
+        foreach ($ret as $k => $v)
+        {
+            $data = json_decode($v['curl_result']);
+            // si une erreur survient on set le champ 'error' a 1 et on indique un message.
+            if (isset($data->error))
+                $arr = ['error' => 1, 'token_error' => 1, 'message' => $data->error->message];
+            else if (isset($data->data[0]))
+            {
+                $arr = [
+                    'email' => $v['email'],
+                    'name'  => $data->data[0]->name,
+                    'id'    => $data->data[0]->id
+                ];
+            }
+            else
+                $arr = ['error' => 1, 'email_error' => 1];
+            array_push($res, $arr);
+        }
         return ($this->handleFacebookResults($res));
     }
 
-    public function getFacebookDataByIds()
+    public function getFacebookDataByIds($ids)
     {
+        $proxy = 'http://163.172.247.174:80'; // Modify the getting way here.
+        $base_url = 'https://graph.facebook.com/';
+        $token = 'CAAAACZAVC6ygBALoCmizqafRwXZBIw141kqZBSxFAgMcTrrUScKdjI1mvsl7Ugy6t2C6VcxfPfUmfdKCEnMHEJTI3ZACgK5hH7ZAdC7ZCzu4suyZCeUNUf2HQvx29g4Wp2nbHPnnM3x1ufYukZBRPiyoRCWDiODpsvokMV8QgaLHA4ADiyNdDFx98hoofAv7p20ZD'; 
+        $urls = [];
+
+        foreach ($ids as $k => $v)
+        {
+            $url = $base_url . $v['id'] . "?access_token=" . $token;
+            $arr = ['email' => $v['email'], 'url' => $url];
+            array_push($urls, $arr);
+        }
+
+        $ret = Curl::CurlOpenGraph($urls, $proxy);
+        foreach ($ret as $k => $v)
+        {
+            $data = json_decode($v['curl_result']);
+            print_r($data);
+        }
         
     }
 
@@ -58,7 +95,7 @@ class Cleaner extends Controller
         }
 
         // Only for debug.
-        $this->debug = true;
+        //        $this->debug = true;
         if (isset($this->debug))
         {
             print_r($verified);
@@ -75,8 +112,8 @@ class Cleaner extends Controller
         }
 
         // On traite chacun des tableaux
-        
-        //        $this->getFacebookDataByIds($verifieds);
+        if (!empty($verified))
+            $this->getFacebookDataByIds($verified);
         //$this->handleTokenError($token_errors);
     }
 } 
