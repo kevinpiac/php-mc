@@ -15,7 +15,11 @@ class Bots extends Controller
             print_r("Are you kiding me bro ? You passed no param...\n");
         }
     }
-
+    
+    public function findBotsToActive()
+    {
+        // write the conditions to find and return the accounts to active.
+    }
     public function activeToken()
     {
         // add where conditions bellow
@@ -30,6 +34,9 @@ class Bots extends Controller
                 'active = 0'
             )
             // add inner join here.
+            /**
+             * USE findBotsToActive();
+             */
         ));
 
         foreach ($accounts as $account)
