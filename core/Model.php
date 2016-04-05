@@ -13,7 +13,11 @@ class Model
     {
         $conf = Database::$databases[$this->conf];
         if (isset(Model::$connections[$this->conf]))
+        {
+            if (!isset($this->db))
+                $this->db = Model::$connections[$this->conf];
             return (true);
+        }
         try
         {
             $pdo = new PDO('mysql:host='.$conf['host'].';dbname='.$conf['db_name'], $conf['user'], $conf['password']);
@@ -88,7 +92,7 @@ class Model
                 else
                     $req .= $v. ' AND ';                    
             }
-            $req = substr($req, 0, -4);
+            $req = substr($req, 0, -5); // to verify
         }
         if (!empty($params['order']))
         {

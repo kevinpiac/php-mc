@@ -33,7 +33,8 @@ class Shooter extends Model
                 'Domain.hour_mail_count <= 150', // un domaine (une ip) envoie 150 mail / heure
                 'Proxy.down != 1', // le proxy ne doit pas etre down
                 'Proxy.expiry > DATE(NOW())' // le proxy ne doit pas avoir expire
-            )
+            ),
+            'limit' => 100 // voir avec thomas
         ));
         return ($shooters);
     }

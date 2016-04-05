@@ -3,10 +3,10 @@
 class People extends Model
 {
     public $table = 'People';
-    public $debug = true;
 
     public function getToShoot()
     {
+        /*
         $laters = $this->findByQuery(
                 "SELECT profile.id, profile.firstname, profile.lastname
                  FROM PeopleProfile as profile
@@ -16,6 +16,8 @@ class People extends Model
                  WHERE
                  activity.status = 2
                 ORDER BY activity");
-        return ($res);
+        */
+        $laters = $this->find();
+        return ($laters);
     }
 }
