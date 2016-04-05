@@ -4,9 +4,6 @@ class Shooter extends Model
 {
     public $table = 'Shooter';
     
-    private $max_month_mail = 10000;
-    private $max_hour_mail = 200;
-
     public function getShooters()
     {
         $shooters = $this->find(array(
@@ -34,7 +31,7 @@ class Shooter extends Model
                 'Proxy.down != 1', // le proxy ne doit pas etre down
                 'Proxy.expiry > DATE(NOW())' // le proxy ne doit pas avoir expire
             ),
-            'limit' => 100 // voir avec thomas
+            'limit' => 10 // voir avec thomas
         ));
         return ($shooters);
     }

@@ -6,23 +6,12 @@ class People extends Model
 
     public function getToShoot()
     {
-        /*
-        $laters = $this->findByQuery(
-                "SELECT profile.id, profile.firstname, profile.lastname
-                 FROM PeopleProfile as profile
-                 INNER JOIN PeopleActivity as activity
-                 ON 
-                 activity.people_id = profile.people_id
-                 WHERE
-                 activity.status = 2
-                ORDER BY activity");
-        */
-        $laters = $this->find([
+        $people = $this->find([
             'fields' => [
                 'People.id',
                 'People.email',
                 'PeopleProfile.firstname',
-                'PeopleProfile.lastname'
+                'PeopleProfile.lastname',
             ],
             'joins' => [
                 [
@@ -38,10 +27,13 @@ class People extends Model
             ],
             'conditions' => [
                 'People.unsubscribe = 0',
-                'PeopleActivity.status = 2',
-                
-            ]
+                'PeopleActivity.status > 0',
+            ],
+            'order' => [
+                'People.id' => 'desc' // FOR TEST ONLY
+            ],
+            'limit' => 5 // FOR TEST ONLY
         ]);
-        return ($laters);
+        return ($people);
     }
 }

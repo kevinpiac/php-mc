@@ -103,6 +103,16 @@ class Model
             }
             $req = substr($req, 0, -2);
         }
+        if (!empty($params['group']))
+        {
+            $req .= ' GROUP BY ';
+            foreach ($params['group'] as $k => $v)
+            {
+                $req .= $k. ' '. strtoupper($v). ', ';
+            }
+            $req = substr($req, 0, -2);
+        }
+
         if (!empty($params['limit']))
             $req .= ' LIMIT '.$params['limit'];
         if ($this->debug == true)
