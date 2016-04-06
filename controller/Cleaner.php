@@ -78,22 +78,7 @@ class Cleaner extends Controller
             $data = json_decode($v['curl_result']);
             array_push($res, $data);
         }
-        $this->loadModel('PeopleProfile');
-        $res = [
-            [
-                'firstname' => 'TEST1',
-                'lastname' => 'test1'
-            ],
-            [
-                'firstname' => 'TEST2',
-                'lastname' => 'test2'
-            ],
-            [
-                'firstname' => 'TEST3',
-                'lastname' => 'test3'
-            ]
-        ];
-        $this->PeopleProfile->saveMany($res);
+        return ($res);
     }
 
     public function handleFacebookResults($result)
@@ -132,7 +117,14 @@ class Cleaner extends Controller
 
         // On traite chacun des tableaux
         if (!empty($verified))
-            $profile = $this->getFacebookDataByIds($verified);
+        {
+            $profiles = $this->getFacebookDataByIds($verified);
+            if (!empty($profiles))
+            {
+                $this->loadModel('PeopleProfile');
+                $this->PeopleProfile->saveFacebookProfiles($profiles);
+            }
+        }        
         //$this->handleTokenError($token_errors);
     }
 } 
