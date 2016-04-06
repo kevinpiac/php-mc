@@ -2,7 +2,7 @@
 
 class FbAccount extends Model
 {
-    public $table = 'fb_accounts';
+    public $table = 'FbAccount';
     public $debug = true;
 
     public function createAccount($email, $password, $proxy_id)

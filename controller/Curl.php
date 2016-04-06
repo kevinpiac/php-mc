@@ -75,6 +75,7 @@ class Curl extends Controller
     {
         $ret = [];
         $curl = curl_init();
+        print_r($proxy."\n\n\n");
         if (!empty($proxy))
         {
             curl_setopt($curl, CURLOPT_PROXY, $proxy);

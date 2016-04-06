@@ -4,37 +4,53 @@ require ROOT.'/controller/Curl.php';
 
 class Cleaner extends Controller
 {
-
-    public function getEmailsToClean()
+    public function clean()
     {
-        $urls = [
-            [
-                'url' => "https://graph.facebook.com/search?q=leserbe11%40gmx.fr&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1ee6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
-                'email' => 'wrongToken@gmail.com'
+        $hour_request_count = 300;    // nombre de requete max par heure par token
+        $hour_request_frequency = 30; // frequence des requetes (ex. 3 => 1 requete toute les 3 minutes)
+        $nb_per_token = $hour_request_count / $hour_request_frequency;
+
+        $this->loadModel('ToClean');
+        $this->loadModel('FbAccount');
+        
+        $tokens = $this->FbAccount->find([
+            'fields' => ['FbAccount.token', 'Proxy.ip'],
+            'joins' => [
+                [
+                    'table' => 'Proxy',
+                    'model' => 'Proxy',
+                    'on' => ['Proxy.fbAccount_id = FbAccount.id']
+                ]
             ],
-            [
-                'url' => "https://graph.facebook.com/search?q=wrong%40gmx.fr&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1eY77Ve6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
-                'email' => 'wrongEmail@gmail.com'
-            ],
-            [
-                'url' => "https://graph.facebook.com/search?q=kevinpiac%40gmail.com&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1eY77Ve6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
-                'email' => 'kevinpiac@gmail.com'
-            ],
-            [
-                'url' => "https://graph.facebook.com/search?q=leserbe11%40gmx.fr&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1eY77Ve6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
-                'email' => 'GoodEmailAndToken@gmail.com'
+            'conditions' => [
+                'token_alive = 1'
             ]
-        ];
-        return $urls;
+        ]);
+        $token_count = count($tokens);
+        foreach ($tokens as $t)
+        {
+            $proxy = $t->ip;
+            $datas = $this->ToClean->find([
+                'limit' => $nb_per_token
+            ]);
+            // /////////////////////////////////
+            //////////////////////////////////
+            // dont forget to set datas as set
+            foreach ($datas as $data)
+            {
+                $data->url = 'https://graph.facebook.com/search?q=' . $data->email . '&type=user&access_token=' . $t->token ;
+            }
+            $datas = json_decode(json_encode($datas), True);
+            $ids = $this->getFacebookIds($datas, $proxy); // $data should replace $URLS.
+        }
+        return ($this->handleFacebookResults($ids));
     }
 
     // voir pour traiter la blank page error !
 
-    public function getFacebookIds()
+    public function getFacebookIds($data, $proxy)
     {
-        $proxy = 'http://163.172.247.174:80'; // Modify the getting way here.
-        $urls = $this->getEmailsToClean();
-        $ret = Curl::CurlOpenGraph($urls, $proxy);
+        $ret = Curl::CurlOpenGraph($data, $proxy);
         // on recupere le resultat de l'openGraph et on le formate dans un joli tableau :D 
         $res = [];
         foreach ($ret as $k => $v)
@@ -55,7 +71,7 @@ class Cleaner extends Controller
                 $arr = ['error' => 1, 'email_error' => 1];
             array_push($res, $arr);
         }
-        return ($this->handleFacebookResults($res));
+        return ($res);
     }
 
     public function getFacebookDataByIds($ids)
@@ -104,7 +120,7 @@ class Cleaner extends Controller
         }
 
         // Only for debug.
-        //$this->debug = true;
+        $this->debug = true;
         if (isset($this->debug))
         {
             print_r($verified);
@@ -119,7 +135,7 @@ class Cleaner extends Controller
             print_r("\n email errors: ". $mail_err_count);
             print_r("\n succes      : ". $verif_count."\n");
         }
-
+        return ;
         // On traite chacun des tableaux
         if (!empty($verified))
         {
@@ -133,3 +149,25 @@ class Cleaner extends Controller
         //$this->handleTokenError($token_errors);
     }
 } 
+
+        /*
+        $urls = [
+            [
+                'url' => "https://graph.facebook.com/search?q=leserbe11%40gmx.fr&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1ee6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
+                'email' => 'wrongToken@gmail.com'
+            ],
+            [
+                'url' => "https://graph.facebook.com/search?q=wrong%40gmx.fr&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1eY77Ve6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
+                'email' => 'wrongEmail@gmail.com'
+            ],
+            [
+                'url' => "https://graph.facebook.com/search?q=kevinpiac%40gmail.com&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1eY77Ve6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
+                'email' => 'kevinpiac@gmail.com'
+            ],
+            [
+                'url' => "https://graph.facebook.com/search?q=leserbe11%40gmx.fr&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1eY77Ve6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
+                'email' => 'GoodEmailAndToken@gmail.com'
+            ]
+        ];
+
+        */
