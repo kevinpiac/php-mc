@@ -1,9 +1,8 @@
 <?php
 
-class PeopleActiviy extends Model
+class PeopleActivity extends Model
 {
     public $table = 'PeopleActivity';
-    public $debug = true;
 
 
 }

@@ -251,10 +251,8 @@ class Model
                 array_push($exec, $va);
             }
         }
-        print_r($data);
-        
-        print_r($exec);
         $pre->execute($exec);
+        //print_r($this->db->lastInsertId());
     }
 
     public function create()

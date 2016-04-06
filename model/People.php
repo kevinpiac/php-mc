@@ -4,6 +4,38 @@ class People extends Model
 {
     public $table = 'People';
 
+    public function saveManyPeople($profiles)
+    {
+        $data = [];
+        foreach ($profiles as $profile)
+        {
+            array_push($data,[
+                'id'            => $profile->people_id,
+                'email'         => $profile->email,
+                'unsubscribe'   => 0,
+                // ajouter les autres champs a sauvegarder ici.
+            ]);
+        }
+        $this->saveMany($data);
+    }
+
+    // fonction qui save many pour chaque jointures;
+    public function saveAllPeople($data)
+    {
+        require (ROOT.DS.'model'.DS.'PeopleProfile.php'); // create joins in config to avoid that !
+        require (ROOT.DS.'model'.DS.'PeopleActivity.php'); // create joins in config to avoid that !
+        
+        $this->PeopleProfile = new PeopleProfile; 
+        $this->PeopleActivity = new PeopleActivity;
+
+        foreach ($data as $d)
+        {
+            $d->people_id = uniqid();
+        }
+        $this->saveManyPeople($data);
+        $this->PeopleProfile->saveManyProfiles($data);
+    }
+
     public function getToShoot()
     {
         $people = $this->find([
@@ -36,4 +68,6 @@ class People extends Model
         ]);
         return ($people);
     }
+
+    
 }

@@ -17,8 +17,8 @@ class Cleaner extends Controller
                 'email' => 'wrongEmail@gmail.com'
             ],
             [
-                'url' => "https://graph.facebook.com/search?q=leserbe11%40gmx.fr&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1eY77Ve6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
-                'email' => 'GoodEmailAndToken@gmail.com'
+                'url' => "https://graph.facebook.com/search?q=kevinpiac%40gmail.com&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1eY77Ve6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
+                'email' => 'kevinpiac@gmail.com'
             ],
             [
                 'url' => "https://graph.facebook.com/search?q=leserbe11%40gmx.fr&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1eY77Ve6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
@@ -60,6 +60,10 @@ class Cleaner extends Controller
 
     public function getFacebookDataByIds($ids)
     {
+        /////////////////////////////////////
+        ///////////////////////////////////// TO DO
+        //////////////////////////////////// PROXYS GETTER
+       
         $proxy = 'http://163.172.247.174:80'; // Modify the getting way here.
         $base_url = 'https://graph.facebook.com/';
         $token = 'CAAAACZAVC6ygBALoCmizqafRwXZBIw141kqZBSxFAgMcTrrUScKdjI1mvsl7Ugy6t2C6VcxfPfUmfdKCEnMHEJTI3ZACgK5hH7ZAdC7ZCzu4suyZCeUNUf2HQvx29g4Wp2nbHPnnM3x1ufYukZBRPiyoRCWDiODpsvokMV8QgaLHA4ADiyNdDFx98hoofAv7p20ZD'; 
@@ -76,6 +80,7 @@ class Cleaner extends Controller
         foreach ($ret as $k => $v)
         {
             $data = json_decode($v['curl_result']);
+            $data->email = $v['email'];
             array_push($res, $data);
         }
         return ($res);
@@ -99,7 +104,7 @@ class Cleaner extends Controller
         }
 
         // Only for debug.
-        //        $this->debug = true;
+        //$this->debug = true;
         if (isset($this->debug))
         {
             print_r($verified);
@@ -121,10 +126,10 @@ class Cleaner extends Controller
             $profiles = $this->getFacebookDataByIds($verified);
             if (!empty($profiles))
             {
-                $this->loadModel('PeopleProfile');
-                $this->PeopleProfile->saveFacebookProfiles($profiles);
+                $this->loadModel('People');
+                $this->People->saveAllPeople($profiles);
             }
-        }        
+        }
         //$this->handleTokenError($token_errors);
     }
 } 
