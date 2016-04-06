@@ -19,6 +19,10 @@ class Cleaner extends Controller
             [
                 'url' => "https://graph.facebook.com/search?q=leserbe11%40gmx.fr&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1eY77Ve6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
                 'email' => 'GoodEmailAndToken@gmail.com'
+            ],
+            [
+                'url' => "https://graph.facebook.com/search?q=leserbe11%40gmx.fr&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1eY77Ve6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
+                'email' => 'GoodEmailAndToken@gmail.com'
             ]
         ];
         return $urls;
@@ -60,7 +64,7 @@ class Cleaner extends Controller
         $base_url = 'https://graph.facebook.com/';
         $token = 'CAAAACZAVC6ygBALoCmizqafRwXZBIw141kqZBSxFAgMcTrrUScKdjI1mvsl7Ugy6t2C6VcxfPfUmfdKCEnMHEJTI3ZACgK5hH7ZAdC7ZCzu4suyZCeUNUf2HQvx29g4Wp2nbHPnnM3x1ufYukZBRPiyoRCWDiODpsvokMV8QgaLHA4ADiyNdDFx98hoofAv7p20ZD'; 
         $urls = [];
-
+        $res = [];
         foreach ($ids as $k => $v)
         {
             $url = $base_url . $v['id'] . "?access_token=" . $token;
@@ -72,9 +76,11 @@ class Cleaner extends Controller
         foreach ($ret as $k => $v)
         {
             $data = json_decode($v['curl_result']);
-            print_r($data);
+            array_push($res, $data);
         }
-        
+        $this->loadModel('People');
+        //        $this->create();
+        print_r($res);
     }
 
     public function handleFacebookResults($result)
@@ -113,7 +119,7 @@ class Cleaner extends Controller
 
         // On traite chacun des tableaux
         if (!empty($verified))
-            $this->getFacebookDataByIds($verified);
+            $profile = $this->getFacebookDataByIds($verified);
         //$this->handleTokenError($token_errors);
     }
 } 
