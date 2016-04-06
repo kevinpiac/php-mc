@@ -78,9 +78,23 @@ class Cleaner extends Controller
             $data = json_decode($v['curl_result']);
             array_push($res, $data);
         }
-        $this->loadModel('People');
-        //        $this->create();
-        print_r($res);
+        $this->loadModel('PeopleProfile');
+        $res = [
+            [
+                'firstname' => 'kevin',
+                'lastname' => 'piacentini'
+            ],
+            [
+                'firstname' => 'antoine',
+                'lastname' => 'coudert'
+            ],
+            [
+                'firstname' => 'jean',
+                'lastname' => 'dujardin'
+            ]
+        ];
+        $this->PeopleProfile->saveMany($res);
+
     }
 
     public function handleFacebookResults($result)

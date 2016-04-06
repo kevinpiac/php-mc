@@ -180,7 +180,7 @@ class Model
                 $req .= $f. ', ';
             }
             $req = substr($req, 0, -2);
-            $req .= ') VALUES(';
+            $req .= ') VALUES (';
             foreach ($data as $f => $v)
             {
                 $req .= ':'.$f. ', ';
@@ -194,6 +194,43 @@ class Model
         }
         else
             $this->updateById($this->id, $data);
+    }
+
+    public function saveMany($data)
+    {
+        $req = 'INSERT INTO ' .$this->table.'(';
+        foreach ($data[0] as $f => $v)
+        {
+            $req .= $f. ', ';
+        }
+        $req = substr($req, 0, -2);
+        $req .= ') VALUES ';
+        
+        foreach ($data as $k => $v)
+        {
+            $req .= '(';
+            foreach ($v as $k => $f)
+            {
+                $req .= ':'.$k . ', ';
+            }
+            $req = substr($req, 0, -2);
+            $req .= '), ';
+        }
+        $req = substr($req, 0, -2);
+        if ($this->debug == true)
+            print_r($req);
+        $pre = $this->db->prepare($req);
+        print_r($data);
+
+        foreach ($data as $k => $v)
+        {
+            foreach($v as $c => $h)
+            {
+                $h .= ':'. $h;
+            }
+        }
+        print_r($data);
+        //        $pre->execute($data);
     }
 
     public function create()
