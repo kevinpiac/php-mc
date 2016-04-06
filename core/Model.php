@@ -196,6 +196,27 @@ class Model
             $this->updateById($this->id, $data);
     }
 
+
+    /*
+    ** Permet de sauvegarder plusieurs lignes de donnees dans une meme table.
+    ** @data = array() => les donnees a sauvegarder au format suivant :
+        $data = [
+            [
+                'field1' => 'TEST1',
+                'field2' => 'test1'
+            ],
+            [
+                'field1' => 'TEST2',
+                'field2' => 'test2'
+            ],
+            [
+                'field1' => 'TEST3',
+                'field2' => 'test3'
+            ]
+        ];
+    ** LES DONNEE DOIVENT ETRE STRUCTUREE DANS LE MEME ORDRE.
+    */
+
     public function saveMany($data)
     {
         $req = 'INSERT INTO ' .$this->table.'(';
@@ -205,13 +226,12 @@ class Model
         }
         $req = substr($req, 0, -2);
         $req .= ') VALUES ';
-        
         foreach ($data as $k => $v)
         {
             $req .= '(';
             foreach ($v as $k => $f)
             {
-                $req .= ':'.$k . ', ';
+                $req .= '?, ';
             }
             $req = substr($req, 0, -2);
             $req .= '), ';
@@ -219,18 +239,22 @@ class Model
         $req = substr($req, 0, -2);
         if ($this->debug == true)
             print_r($req);
-        $pre = $this->db->prepare($req);
-        print_r($data);
 
+        $pre = $this->db->prepare($req);
+
+        // rearenging the data array for pdo execution.
+        $exec = [];
         foreach ($data as $k => $v)
         {
-            foreach($v as $c => $h)
+            foreach ($v as $ke => $va)
             {
-                $h .= ':'. $h;
+                array_push($exec, $va);
             }
         }
         print_r($data);
-        //        $pre->execute($data);
+        
+        print_r($exec);
+        $pre->execute($exec);
     }
 
     public function create()
