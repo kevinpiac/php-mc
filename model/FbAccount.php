@@ -17,7 +17,9 @@ class FbAccount extends Model
                 ]
             ],
             'conditions' => [
-                'token_alive = 1'
+                'token_alive = 1',
+                'Proxy.down = 0',
+                'Proxy.expiry > CURDATE()'
             ]
         ]);
         return ($data);
@@ -35,7 +37,9 @@ class FbAccount extends Model
                 ]
             ],
             'conditions' => [
-                'token_alive = 1'
+                'token_alive = 1',
+                'Proxy.down = 0',
+                'Proxy.expiry > CURDATE()'
             ]
         ]);
         return ($data);

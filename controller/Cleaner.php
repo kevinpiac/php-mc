@@ -33,7 +33,7 @@ class Cleaner extends Controller
             {
                 $data->url = 'https://graph.facebook.com/search?q=' . $data->email . '&type=user&access_token=' . $t->token ;
             }
-            $datas = json_decode(json_encode($datas), True);
+            $datas = json_decode(json_encode($datas), true);
             $ids = array_merge($ids, $this->getFacebookIds($datas, $proxy));
         }
         $this->handleFacebookResults($ids);
@@ -103,14 +103,15 @@ class Cleaner extends Controller
         }
 
         $ret = Curl::CurlOpenGraph($urls, $proxy);
-        print_r($ret); die();
+        /***************************
+         ** SHOULD BE ABLE TO PREVENT THE ERROR IF PROXY IS DOWN
+         **************************/
         foreach ($ret as $k => $v)
         {
             $data = json_decode($v['curl_result']);
             $data->email = $v['email'];
             array_push($res, $data);
         }
-        print_r($res);die();
         return ($res);
     }
 
@@ -155,7 +156,6 @@ class Cleaner extends Controller
         if (!empty($verified))
         {
             $profiles = $this->getFacebookDataByIds($verified);
-            return ;
             if (!empty($profiles))
             {
                 $this->loadModel('People');
