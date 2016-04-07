@@ -17,7 +17,7 @@ class PeopleProfile extends Model
                 'locale'        => $profile->locale,
                 'gender'        => $profile->gender,
                 'name'          => $profile->name,
-                'people_id'     => $profile->people_id
+                'people_id'     => $profile->user_id
             ]);
         }
         $this->saveMany($data);

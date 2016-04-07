@@ -10,7 +10,7 @@ class People extends Model
         foreach ($profiles as $profile)
         {
             array_push($data,[
-                'id'            => $profile->people_id,
+                'id'            => $profile->user_id,
                 'email'         => $profile->email,
                 'unsubscribe'   => 0,
                 // ajouter les autres champs a sauvegarder ici.
@@ -28,10 +28,6 @@ class People extends Model
         $this->PeopleProfile = new PeopleProfile; 
         $this->PeopleActivity = new PeopleActivity;
 
-        foreach ($data as $d)
-        {
-            $d->people_id = uniqid();
-        }
         $this->saveManyPeople($data);
         $this->PeopleProfile->saveManyProfiles($data);
     }

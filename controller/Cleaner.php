@@ -45,7 +45,6 @@ class Cleaner extends Controller
     {
         $ret = Curl::CurlOpenGraph($data, $proxy);
         // on recupere le resultat de l'openGraph et on le formate dans un joli tableau :D 
-        //        print_r($ret);
         $res = [];
         foreach ($ret as $k => $v)
         {
@@ -74,7 +73,8 @@ class Cleaner extends Controller
                     $arr = [
                         'email' => $v['email'],
                         'name'  => $data->data[0]->name,
-                        'id'    => $data->data[0]->id
+                        'id'    => $data->data[0]->id,
+                        'user_id' => $v['user_id']
                     ];
                 }
                 else // Sinon, c'est que le mail n'existe pas. On ajoute email error au tableau.
@@ -98,7 +98,7 @@ class Cleaner extends Controller
         foreach ($ids as $k => $v)
         {
             $url = $base_url . $v['id'] . "?access_token=" . $token;
-            $arr = ['email' => $v['email'], 'url' => $url];
+            $arr = ['email' => $v['email'], 'user_id' => $v['user_id'], 'url' => $url];
             array_push($urls, $arr);
         }
 
@@ -110,6 +110,7 @@ class Cleaner extends Controller
         {
             $data = json_decode($v['curl_result']);
             $data->email = $v['email'];
+            $data->user_id = $v['user_id'];
             array_push($res, $data);
         }
         return ($res);
