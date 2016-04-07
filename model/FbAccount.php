@@ -23,6 +23,24 @@ class FbAccount extends Model
         return ($data);
     }
 
+    public function getFirstActiveTokensAndProxys()
+    {
+        $data = $this->findFirst([
+            'fields' => ['FbAccount.token', 'Proxy.ip'],
+            'joins' => [
+                [
+                    'table' => 'Proxy',
+                    'model' => 'Proxy',
+                    'on' => ['Proxy.fbAccount_id = FbAccount.id']
+                ]
+            ],
+            'conditions' => [
+                'token_alive = 1'
+            ]
+        ]);
+        return ($data);
+    }
+
     public function createAccount($email, $password, $proxy_id)
     {
         $data = array(

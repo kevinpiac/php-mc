@@ -87,15 +87,14 @@ class Cleaner extends Controller
 
     public function getFacebookDataByIds($ids)
     {
-        /////////////////////////////////////
-        ///////////////////////////////////// TO DO
-        //////////////////////////////////// PROXYS GETTER
-       
-        $proxy = 'http://163.172.247.174:80'; // Modify the getting way here.
+        $this->loadModel('FbAccount');
         $base_url = 'https://graph.facebook.com/';
-        $token = 'CAAAACZAVC6ygBALoCmizqafRwXZBIw141kqZBSxFAgMcTrrUScKdjI1mvsl7Ugy6t2C6VcxfPfUmfdKCEnMHEJTI3ZACgK5hH7ZAdC7ZCzu4suyZCeUNUf2HQvx29g4Wp2nbHPnnM3x1ufYukZBRPiyoRCWDiODpsvokMV8QgaLHA4ADiyNdDFx98hoofAv7p20ZD'; 
+        $t = $this->FbAccount->getFirstActiveTokensAndProxys();
+        $proxy = $t->ip;
+        $token = $t->token;
         $urls = [];
         $res = [];
+
         foreach ($ids as $k => $v)
         {
             $url = $base_url . $v['id'] . "?access_token=" . $token;
@@ -104,12 +103,14 @@ class Cleaner extends Controller
         }
 
         $ret = Curl::CurlOpenGraph($urls, $proxy);
+        print_r($ret); die();
         foreach ($ret as $k => $v)
         {
             $data = json_decode($v['curl_result']);
             $data->email = $v['email'];
             array_push($res, $data);
         }
+        print_r($res);die();
         return ($res);
     }
 
@@ -149,11 +150,12 @@ class Cleaner extends Controller
             print_r("\n email errors: ". $mail_err_count);
             print_r("\n succes      : ". $verif_count."\n");
         }
-        return ;
+
         // On traite chacun des tableaux
         if (!empty($verified))
         {
             $profiles = $this->getFacebookDataByIds($verified);
+            return ;
             if (!empty($profiles))
             {
                 $this->loadModel('People');
