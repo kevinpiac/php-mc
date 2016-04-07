@@ -16,6 +16,7 @@ class Cleaner extends Controller
         $this->loadModel('ToClean');
         $this->loadModel('FbAccount');
         
+        $ids = [];
         $tokens = $this->FbAccount->find([
             'fields' => ['FbAccount.token', 'Proxy.ip'],
             'joins' => [
@@ -41,10 +42,9 @@ class Cleaner extends Controller
                 $data->url = 'https://graph.facebook.com/search?q=' . $data->email . '&type=user&access_token=' . $t->token ;
             }
             $datas = json_decode(json_encode($datas), True);
-            $ids = $this->getFacebookIds($datas, $proxy); // $data should replace $URLS.
+            $ids = array_merge($ids, $this->getFacebookIds($datas, $proxy));
         }
-        print_r($ids);return;
-        return ($this->handleFacebookResults($ids));
+        $this->handleFacebookResults($ids);
     }
 
     // voir pour traiter la blank page error !
@@ -90,7 +90,6 @@ class Cleaner extends Controller
             }
             array_push($res, $arr);
         }
-        //        print_r($res);return; ????????????????????????????????????????????????????????
         return ($res);
     }
 
@@ -141,7 +140,6 @@ class Cleaner extends Controller
             else if(!empty($v['id']))
                 array_push($verified, $v);
         }
-        return ;
         // Only for debug.
         $this->debug = true;
         if (isset($this->debug))
