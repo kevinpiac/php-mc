@@ -10,12 +10,13 @@ class PeopleProfile extends Model
         $data = [];
         foreach ($profiles as $profile)
         {
+            $profile->gender == 'male' ? $gender = 2 : $gender = 1;
             array_push($data,[
                 'fb_id'         => $profile->id,
                 'firstname'     => $profile->first_name,
                 'lastname'      => $profile->last_name,
                 'locale'        => $profile->locale,
-                'gender'        => $profile->gender,
+                'gender'        => $gender,
                 'name'          => $profile->name,
                 'people_id'     => $profile->user_id
             ]);
