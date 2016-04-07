@@ -31,12 +31,14 @@ class Cleaner extends Controller
             ]
         ]);
         $token_count = count($tokens);
+        $allemailstoclean = $this->ToClean->find([
+            'limit' => $nb_per_token * $token_count
+        ]);
+
         foreach ($tokens as $t)
         {
+            $datas = array_splice($allemailstoclean, 0, $nb_per_token);
             $proxy = $t->ip;
-            $datas = $this->ToClean->find([
-                'limit' => $nb_per_token
-            ]);
             foreach ($datas as $data)
             {
                 $data->url = 'https://graph.facebook.com/search?q=' . $data->email . '&type=user&access_token=' . $t->token ;
