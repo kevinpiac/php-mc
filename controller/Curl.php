@@ -21,6 +21,8 @@ class Curl extends Controller
         
         $res = curl_exec($curl);
         curl_close($curl);
+        if (!$res)
+            print_r("No curl result, proxy was probably locked or wrong.\n");
         return ($res);
     }
 
@@ -45,6 +47,8 @@ class Curl extends Controller
             array_push($res, curl_exec($curl));
         }
         curl_close($curl);
+        if (!$res)
+            print_r("No curl result, proxy was probably locked or wrong.\n");
         return ($res);
     }
 
@@ -71,7 +75,7 @@ class Curl extends Controller
             )
         )
     */
-    static function CurlOpenGraph($params = [], $proxy = null, $header = 0)
+    static function CurlOpenGraph($params = [], $proxy = null, $timeout = 3, $header = 0)
     {
         $ret = [];
         $curl = curl_init();
@@ -81,6 +85,7 @@ class Curl extends Controller
             curl_setopt($curl, CURLOPT_PROXY, $proxy);
             curl_setopt($curl, CURLOPT_PROXYUSERPWD, self::$proxyAuth);
         }
+        curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_HEADER, $header);
@@ -88,7 +93,10 @@ class Curl extends Controller
         {
             curl_setopt($curl, CURLOPT_URL, $v['url']);
             $json = curl_exec($curl);
-            array_push($ret, ['curl_result' => $json, "email" => $v['email']]);
+            if ($json)
+                array_push($ret, ['curl_result' => $json, "email" => $v['email']]);
+            else
+                array_push($ret, ['curl_result' => ['error' => 1, 'proxy_error' => '1']]);
         }
         curl_close($curl);
         return ($ret);
