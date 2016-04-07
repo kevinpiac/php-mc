@@ -2,42 +2,32 @@
 
 require ROOT.'/controller/Curl.php';
 
+define('NB_REQUEST_PER_HOUR', 300);
+define('REQUEST_FREQUENCY', 50);
+define('REQUEST_PER_TOKEN', NB_REQUEST_PER_HOUR / REQUEST_FREQUENCY);
 
 // -> Clean --> getFacebookIds --> handleFacebookResults --> getFacebookDataByIds --> (saving).
 
 class Cleaner extends Controller
 {
+  
+
     public function clean()
     {
-        $hour_request_count = 300;    // nombre de requete max par heure par token
-        $hour_request_frequency = 50; // frequence des requetes (ex. 3 => 1 requete toute les 3 minutes)
-        $nb_per_token = $hour_request_count / $hour_request_frequency;
-
         $this->loadModel('ToClean');
         $this->loadModel('FbAccount');
         
         $ids = [];
-        $tokens = $this->FbAccount->find([
-            'fields' => ['FbAccount.token', 'Proxy.ip'],
-            'joins' => [
-                [
-                    'table' => 'Proxy',
-                    'model' => 'Proxy',
-                    'on' => ['Proxy.fbAccount_id = FbAccount.id']
-                ]
-            ],
-            'conditions' => [
-                'token_alive = 1'
-            ]
-        ]);
+        $tokens = $this->FbAccount->getActiveTokensAndProxys();
         $token_count = count($tokens);
+
         $allemailstoclean = $this->ToClean->find([
-            'limit' => $nb_per_token * $token_count
+            'limit' => REQUEST_PER_TOKEN * $token_count
         ]);
 
         foreach ($tokens as $t)
         {
-            $datas = array_splice($allemailstoclean, 0, $nb_per_token);
+            $datas = array_splice($allemailstoclean, 0, REQUEST_PER_TOKEN);
             $proxy = $t->ip;
             foreach ($datas as $data)
             {
@@ -129,7 +119,7 @@ class Cleaner extends Controller
         $token_errors = [];
         $email_errors = [];
         $proxy_errors = [];
-        // on divise le resultat en trois tableaux
+        // on divise le resultat en quatre tableaux
         print_r($result);
         foreach ($result as $k => $v)
         {
@@ -173,6 +163,8 @@ class Cleaner extends Controller
         //$this->handleTokenError($token_errors);
     }
 } 
+
+
 /*        $allWrong = Curl::CurlOne('https://graph.facebook.com/search?q=charlestadde@icloud.com&type=user&access_token=CAAAACZAVC6ygBALG9roRwRWxa7TA8FixI3CmFL9vo3DyWeI45JeAkCC9r20ZA9vWEtVka5v50GRpTMqxHh1VxiGn73NTypBMw2Q44Cl4lY8oBBqQ5cZAB0FxPhBtbsJtsauUncWr34noPu4rEYzBbuaAVNytXzmdcrOKmmznXOwqRqe1w5K', '185.3.132.148:80');        
         $goodProxyAndWrongEmail = Curl::CurlOne('https://graph.facebook.com/search?q=charlestadde@icloud.com&type=user&access_token=CAAAACZAVC6ygBALG9roRwRWxa7TA8FixI3CmFL9vo3DyWeI45JeAkCC9r20ZA9vWEtVka5v50GRpTMqxHh1VxiGn73NTypBMw2Q44Cl4lY8oBBqQ5cZAB0FxPhBtbsJtsauUncWr34noPu4rEYzBbuaAVNytXzmdcrOKmmznXOwqRqe1w5K', '212.129.6.111:80');
         $goodProxyAndGoodEmail = Curl::CurlOne('https://graph.facebook.com/search?q=kevinpiac@gmail.com&type=user&access_token=CAAAACZAVC6ygBAJBZBwJZCt1KHCP3i9005eiYVvZBZA7ReQEZAq10Rl3QZC655fJKJUU6syFFBgHmdNvjiaPPzhHYzsZBX9YZCoKC4HCQTNdShJuE6LCToDcZClcWRvOuXrvymE1HOxYidCarHjp3XCLKAJRUvoLBNZBNCnVk4jDQTS0h2fiWfLWR9E', '212.129.6.111:80');
@@ -184,24 +176,3 @@ class Cleaner extends Controller
 
 */
 
-        /*
-        $urls = [
-            [
-                'url' => "https://graph.facebook.com/search?q=leserbe11%40gmx.fr&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1ee6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
-                'email' => 'wrongToken@gmail.com'
-            ],
-            [
-                'url' => "https://graph.facebook.com/search?q=wrong%40gmx.fr&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1eY77Ve6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
-                'email' => 'wrongEmail@gmail.com'
-            ],
-            [
-                'url' => "https://graph.facebook.com/search?q=kevinpiac%40gmail.com&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1eY77Ve6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
-                'email' => 'kevinpiac@gmail.com'
-            ],
-            [
-                'url' => "https://graph.facebook.com/search?q=leserbe11%40gmx.fr&type=user&access_token=CAAAACZAVC6ygBALA3akfozB0fHa1c4OZBIa1eY77Ve6Xqg8qv68fZBfxXZA6Wnz1nK6ZBVw706expSanZAvqMIPmTcBIEZB38K8gmT4wHqP9ssGyJH5FT11czUXqzZCSSdx4Aq4W0IHpcsNcKwlQGtWPscwokAsN2f0okE0IIzC7ZA8HkN1YseNVc9eGUMyzTWIFoxnKddSU82gZDZD", 
-                'email' => 'GoodEmailAndToken@gmail.com'
-            ]
-        ];
-
-        */

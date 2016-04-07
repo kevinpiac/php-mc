@@ -94,7 +94,10 @@ class Curl extends Controller
             curl_setopt($curl, CURLOPT_URL, $v['url']);
             $json = curl_exec($curl);
             if ($json)
-                array_push($ret, ['curl_result' => $json, "email" => $v['email']]);
+                array_push($ret, [
+                    'curl_result'       => $json, 
+                    'email'             => $v['email'],
+                ]);
             else
                 array_push($ret, ['curl_result' => ['error' => 1, 'proxy_error' => '1']]);
         }
