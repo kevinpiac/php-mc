@@ -22,6 +22,7 @@ class Cleaner extends Controller
         $token_count = count($tokens);
 
         $allemailstoclean = $this->ToClean->find([
+            'conditions' => ['cleaned = 0'],
             'limit' => REQUEST_PER_TOKEN * $token_count
         ]);
 
@@ -40,7 +41,6 @@ class Cleaner extends Controller
     }
 
     // voir pour traiter la blank page error !
-
     public function getFacebookIds($data, $proxy)
     {
         $ret = Curl::CurlOpenGraph($data, $proxy);
@@ -104,7 +104,7 @@ class Cleaner extends Controller
 
         $ret = Curl::CurlOpenGraph($urls, $proxy);
         /***************************
-         ** SHOULD BE ABLE TO PREVENT THE ERROR IF PROXY IS DOWN
+         ** TO DO: SHOULD BE ABLE TO PREVENT THE ERROR IF PROXY IS DOWN
          **************************/
         foreach ($ret as $k => $v)
         {

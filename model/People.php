@@ -27,7 +27,13 @@ class People extends Model
         
         $this->PeopleProfile = new PeopleProfile; 
         $this->PeopleActivity = new PeopleActivity;
+        $ids = [];
+        foreach ($data as $k => $v)
+            array_push($ids, $v->user_id);
 
+        $ids = implode(",", $ids);
+        $query = "UPDATE ToClean as ToClean SET ToClean.cleaned = 1 WHERE user_id IN (". $ids . ")";
+        $this->query($query);
         $this->saveManyPeople($data);
         $this->PeopleProfile->saveManyProfiles($data);
     }

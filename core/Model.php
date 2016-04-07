@@ -30,6 +30,19 @@ class Model
         }
     }
 
+    public function query($query)
+    {
+        if ($this->debug == true)
+        {
+            print_r("START OF DEBUG MODE FOR MODEL\n------------\n\n");
+            print_r($query);
+            print_r("\n------------\nEND OF DEBUG MODE FOR MODEL\n\n");
+        }
+        $pre = $this->db->prepare($query);
+        $pre->execute();
+        return ($pre->fetchAll(PDO::FETCH_OBJ));
+    }
+
     public function find($params)
     {
         if (!empty($params['fields']) || !empty($params['join']['fields']))
@@ -297,4 +310,68 @@ class Model
         $params = array_merge($cond, $fields);
         $this->update($params);
     }
+
+    public function updateMany($params)
+    {
+        $req = 'UPDATE ' . $this->table . ' as ' .  get_class($this) . ' SET ';
+        if (!empty($params['fields']))
+        {
+            foreach ($params['fields'] as $f => $v)
+            {
+                $req .= $f . ' = ' .$v . ', ';
+            }
+        }
+        $req = substr($req, 0, -2);
+            /**********************
+            *********************** TO DO: conditions and wherein
+            ********************************************/       
+        if (!empty($params['conditions']))
+        {
+            $req .= ' WHERE ';
+            foreach ($params['conditions'] as $k => $v)
+            {
+                if (!is_numeric($k) && !is_array($k))
+                    $req .= $k. ' ' .'\''.$v.'\''. ' AND ';
+                else
+                {
+                    if (is_array($v))
+                    {
+                        $req .= $k . ' IN (';
+                        foreach ($v as $val)
+                        {
+                            $req .= $val . ', ';
+                        }
+                        $req = substr($req, 0, -2);
+                        $req .= ')';                        
+                    }
+                    else
+                        $req .= $v. ' AND ';                    
+                }
+            }
+            $req = substr($req, 0, -5);
+        }
+
+        if ($this->debug == true)
+            print_r($req);
+        $pre = $this->db->prepare($req);
+        $pre->execute($params['fields']);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
