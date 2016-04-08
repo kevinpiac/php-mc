@@ -6,7 +6,9 @@ define('DS', DIRECTORY_SEPARATOR);
 define('CORE', ROOT.DS.'core');
 define('CONFIG', ROOT.DS.'config');
 
+require(ROOT.DS.'vendor'.DS.'autoload.php');
 require(CORE.DS.'includes.php');
+
 ///////////////////////////////////////////
 // create an http router to avoid that...
 if (isset($_POST['token']) && isset($_POST['fb_account_id']))
