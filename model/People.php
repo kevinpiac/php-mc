@@ -29,6 +29,7 @@ class People extends Model
         $this->PeopleActivity = new PeopleActivity;
         $this->saveManyPeople($data);
         $this->PeopleProfile->saveManyProfiles($data);
+        $this->PeopleActivity->SaveManyActivities($data);
         $ids = [];
         foreach ($data as $k => $v)
             array_push($ids, $v->user_id);
@@ -71,5 +72,4 @@ class People extends Model
         return ($people);
     }
 
-    
 }
