@@ -6,16 +6,20 @@ define('NB_REQUEST_PER_HOUR', 300);
 define('REQUEST_FREQUENCY', 50);
 define('REQUEST_PER_TOKEN', NB_REQUEST_PER_HOUR / REQUEST_FREQUENCY);
 
+define('OPEN_GRAPH_BASE_URL', 'https://graph.facebook.com/');
+define('OG_SEARCH_PART1', OPEN_GRAPH_BASE_URL . 'search?q=');
+define('OG_SEARCH_PART2','&type=user&access_token=');
+
+
 // -> Clean --> getFacebookIds --> handleFacebookResults --> getFacebookDataByIds --> (saving).
 
 class Cleaner extends Controller
 {
-  
-
     public function clean()
     {
         $this->loadModel('ToClean');
         $this->loadModel('FbAccount');
+        $this->loadModel('People');
         
         $ids = [];
         $tokens = $this->FbAccount->getActiveTokensAndProxys();
@@ -32,7 +36,7 @@ class Cleaner extends Controller
             $proxy = $t->ip;
             foreach ($datas as $data)
             {
-                $data->url = 'https://graph.facebook.com/search?q=' . $data->email . '&type=user&access_token=' . $t->token ;
+                $data->url = OG_SEARCH_PART1 . $data->email . OG_SEARCH_PART2 . $t->token ;
             }
             $datas = json_decode(json_encode($datas), true);
             $ids = array_merge($ids, $this->getFacebookIds($datas, $proxy));
@@ -54,7 +58,7 @@ class Cleaner extends Controller
                 $arr = [
                     'error' => 1, 
                     'proxy_error' => 1, 
-                    'message' => 'Empty curl result, you should check the proxy'
+                    'message' => 'Empty curl result, you should check the proxy',
                 ];
             }
             else
@@ -78,7 +82,14 @@ class Cleaner extends Controller
                     ];
                 }
                 else // Sinon, c'est que le mail n'existe pas. On ajoute email error au tableau.
-                    $arr = ['error' => 1, 'email_error' => 1];
+                {
+                    $arr = [
+                        'error' => 1, 
+                        'email_error' => 1,
+                        'email' => $v['email'],
+                        'user_id' => $v['user_id']
+                    ];
+                }
             }
             array_push($res, $arr);
         }
@@ -88,7 +99,6 @@ class Cleaner extends Controller
     public function getFacebookDataByIds($ids)
     {
         $this->loadModel('FbAccount');
-        $base_url = 'https://graph.facebook.com/';
         $t = $this->FbAccount->getFirstActiveTokensAndProxys();
         $proxy = $t->ip;
         $token = $t->token;
@@ -97,12 +107,13 @@ class Cleaner extends Controller
 
         foreach ($ids as $k => $v)
         {
-            $url = $base_url . $v['id'] . "?access_token=" . $token;
+            $url = OPEN_GRAPH_BASE_URL . $v['id'] . "?access_token=" . $token;
             $arr = ['email' => $v['email'], 'user_id' => $v['user_id'], 'url' => $url];
             array_push($urls, $arr);
         }
-
+        
         $ret = Curl::CurlOpenGraph($urls, $proxy);
+        
         /***************************
          ** TO DO: SHOULD BE ABLE TO PREVENT THE ERROR IF PROXY IS DOWN
          **************************/
@@ -123,7 +134,6 @@ class Cleaner extends Controller
         $email_errors = [];
         $proxy_errors = [];
         // on divise le resultat en quatre tableaux
-        print_r($result);
         foreach ($result as $k => $v)
         {
             if (isset($v['email_error']))
@@ -159,10 +169,15 @@ class Cleaner extends Controller
             $profiles = $this->getFacebookDataByIds($verified);
             if (!empty($profiles))
             {
-                $this->loadModel('People');
                 $this->People->saveAllPeople($profiles);
             }
         }
+        $ids = [];
+        foreach ($email_errors as $k => $v)
+            array_push($ids, $v['user_id']);
+        $ids = implode(',', $ids);
+        $query = "UPDATE ToClean as ToClean SET ToClean.cleaned = 1 WHERE user_id IN (". $ids . ")";
+        $this->ToClean->query($query);
         //$this->handleTokenError($token_errors);
     }
 } 

@@ -10,6 +10,11 @@ class PeopleProfile extends Model
         $data = [];
         foreach ($profiles as $profile)
         {
+            $query = "SELECT cp, born, country, lat, lgt FROM ToClean WHERE user_id = ". $profile->user_id;
+
+            $importedData = $this->query($query);
+            print_r($importedData); die();
+                          
             $gender = $profile->gender == 'male' ? 2 : 1;
             array_push($data,[
                 'fb_id'         => $profile->id,
@@ -18,7 +23,8 @@ class PeopleProfile extends Model
                 'locale'        => $profile->locale,
                 'gender'        => $gender,
                 'name'          => $profile->name,
-                'people_id'     => $profile->user_id
+                'people_id'     => $profile->user_id,
+                'updated_fb'    => strtotime($profile->updated_time)
             ]);
         }
         $this->saveMany($data);
