@@ -13,8 +13,6 @@ class PeopleProfile extends Model
             $query = "SELECT cp, born, country, lat, lgt FROM ToClean WHERE user_id = ". $profile->user_id;
 
             $importedData = $this->query($query);
-            print_r($importedData); die();
-                          
             $gender = $profile->gender == 'male' ? 2 : 1;
             array_push($data,[
                 'fb_id'         => $profile->id,
@@ -24,9 +22,16 @@ class PeopleProfile extends Model
                 'gender'        => $gender,
                 'name'          => $profile->name,
                 'people_id'     => $profile->user_id,
-                'updated_fb'    => strtotime($profile->updated_time)
+                'fb_updated'    => $profile->updated_time,
+                'zipcode'       => $importedData[0]->cp,
+                'birth'         => date("y/m/d", $importedData[0]->born),
+                'country'       => $importedData[0]->country,
+                'lat'           => $importedData[0]->lat,
+                'lgt'           => $importedData[0]->lgt,
+
             ]);
         }
+        print_r($data);
         $this->saveMany($data);
     }
 }
