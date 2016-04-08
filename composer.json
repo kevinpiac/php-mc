@@ -1,6 +1,6 @@
 {
     "name": "root/sym",
     "require": {
-        "swiftmailer/swiftmailer": "@stable"
+        "phpmailer/phpmailer": "^5.2"
     }
 }
