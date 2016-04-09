@@ -1,6 +1,18 @@
 {
     "name": "root/sym",
-    "require": {
-        "phpmailer/phpmailer": "^5.2"
-    }
+  
+    "require":
+    {
+	"phpclasses/smtpclass": ">=1.0.3"
+    },
+    "repositories":
+    [
+	{
+	    "type": "composer",
+      "url": "https:\/\/www.phpclasses.org\/"
+	},
+	{
+	    "packagist": false
+	}
+    ]
 }

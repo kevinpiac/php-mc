@@ -4,69 +4,67 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f7b0033e69bd89ccfa63a57aa348ad4d",
-    "content-hash": "dba7fe469ca87976eb57cd3959409f65",
+    "hash": "72e74b3dea68880c91a0304033334a53",
+    "content-hash": "62a91e6012e56fabf2df89714761df7f",
     "packages": [
         {
-            "name": "phpmailer/phpmailer",
-            "version": "v5.2.14",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "e774bc9152de85547336e22b8926189e582ece95"
-            },
+            "name": "phpclasses/phpresolver",
+            "version": "1.0.1",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/e774bc9152de85547336e22b8926189e582ece95",
-                "reference": "e774bc9152de85547336e22b8926189e582ece95",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.0.0"
-            },
-            "require-dev": {
-                "phpdocumentor/phpdocumentor": "*",
-                "phpunit/phpunit": "4.7.*"
-            },
-            "suggest": {
-                "league/oauth2-client": "Needed for XOAUTH2 authentication",
-                "league/oauth2-google": "Needed for Gmail XOAUTH2"
+                "url": "https://www.phpclasses.org/install/package/phpresolver.zip",
+                "reference": null,
+                "shasum": null
             },
             "type": "library",
             "autoload": {
                 "classmap": [
-                    "class.phpmailer.php",
-                    "class.phpmaileroauth.php",
-                    "class.phpmaileroauthgoogle.php",
-                    "class.smtp.php",
-                    "class.pop3.php",
-                    "extras/EasyPeasyICS.php",
-                    "extras/ntlm_sasl_client.php"
+                    "DNS.php",
+                    "rrcompat.php"
                 ]
+            }
+        },
+        {
+            "name": "phpclasses/sasl",
+            "version": "1.0.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://www.phpclasses.org/install/package/sasl.zip",
+                "reference": null,
+                "shasum": null
             },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-2.1"
-            ],
-            "authors": [
-                {
-                    "name": "Jim Jagielski",
-                    "email": "jimjag@gmail.com"
-                },
-                {
-                    "name": "Marcus Bointon",
-                    "email": "phpmailer@synchromedia.co.uk"
-                },
-                {
-                    "name": "Andy Prevost",
-                    "email": "codeworxtech@users.sourceforge.net"
-                },
-                {
-                    "name": "Brent R. Matzelle"
-                }
-            ],
-            "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-11-01 10:15:28"
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "sasl.php",
+                    "plain_sasl_client.php",
+                    "login_sasl_client.php",
+                    "cram_md5_sasl_client.php",
+                    "ntlm_sasl_client.php",
+                    "basic_sasl_client.php",
+                    "digest_sasl_client.php"
+                ]
+            }
+        },
+        {
+            "name": "phpclasses/smtpclass",
+            "version": "1.0.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://www.phpclasses.org/install/package/smtpclass.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "phpclasses/phpresolver": "1.0.1",
+                "phpclasses/sasl": ">=1.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "smtp.php"
+                ]
+            }
         }
     ],
     "packages-dev": [],

@@ -17,53 +17,57 @@ class Mailers extends Controller
 
     public function test()
     {
-        $mail = new PHPMailer;
+        $from="kevinpiac@gmail.com"; $sender_line=__LINE__;
+        $to="kevinpiac@gmail.com"; $recipient_line=__LINE__;
 
-        //$mail->SMTPDebug = 3;                               // Enable verbose debug output
+        if(strlen($from)==0)
+            die("Please set the messages sender address in line ".$sender_line." of the script ".basename(__FILE__)."\n");
+        if(strlen($to)==0)
+            die("Please set the messages recipient address in line ".$recipient_line." of the script ".basename(__FILE__)."\n");
 
-        $mail->isSMTP();                                      // Set mailer to use SMTP
-        $mail->Host = 'smtp1.example.com;smtp2.example.com';  // Specify main and backup SMTP servers
-        $mail->SMTPAuth = true;                               // Enable SMTP authentication
-        $mail->Username = 'user@example.com';                 // SMTP username
-        $mail->Password = 'secret';                           // SMTP password
-        $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-        $mail->Port = 587;                                    // TCP port to connect to
+        $smtp=new smtp_class;
 
-        $mail->setFrom('from@example.com', 'Mailer');
-        $mail->addAddress('joe@example.net', 'Joe User');     // Add a recipient
-        $mail->addAddress('ellen@example.com');               // Name is optional
-        $mail->addReplyTo('info@example.com', 'Information');
-        $mail->addCC('cc@example.com');
-        $mail->addBCC('bcc@example.com');
+        $smtp->host_name="SSL0.OVH.NET"; /* Change this variable to the address of the SMTP server to relay, like "smtp.myisp.com" */
+        $smtp->host_port=587; /* Change this variable to the port of the SMTP server to use, like 465 */
+        $smtp->ssl=0; /* Change this variable if the SMTP server requires an secure connection using SSL */
 
-        $mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
-        $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
-        $mail->isHTML(true);                                  // Set email format to HTML
+        $smtp->http_proxy_host_name='163.172.247.174'; /* Change this variable if you need to connect to SMTP server via an HTTP proxy */
+        $smtp->http_proxy_host_port=80; /* Change this variable if you need to connect to SMTP server via an HTTP proxy */
 
-        $mail->Subject = 'Here is the subject';
-        $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
-        $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+        $smtp->socks_host_name = ''; /* Change this variable if you need to connect to SMTP server via an SOCKS server */
+        $smtp->socks_host_port = 1080; /* Change this variable if you need to connect to SMTP server via an SOCKS server */
+        $smtp->socks_version = '5'; /* Change this variable if you need to connect to SMTP server via an SOCKS server */
 
-        if(!$mail->send()) {
-            echo 'Message could not be sent.';
-            echo 'Mailer Error: ' . $mail->ErrorInfo;
-        } else {
-            echo 'Message has been sent';
-        }
-        /*        $transport = Swift_SmtpTransport::newInstance('SSL0.OVH.NET', 587)
-                   ->setUsername('05@nouveaumessage21.ovh')
-                   ->setPassword('tomylyjon')
-                   ;
+        $smtp->start_tls=0; /* Change this variable if the SMTP server requires security by starting TLS during the connection */
+        $smtp->localhost="0.0.0.0"; /* Your computer address */
+        $smtp->direct_delivery=0; /* Set to 1 to deliver directly to the recepient SMTP server */
+        $smtp->timeout=10; /* Set to the number of seconds wait for a successful connection to the SMTP server */
+        $smtp->data_timeout=0; /* Set to the number seconds wait for sending or retrieving data from the SMTP server.
+                                  Set to 0 to use the same defined in the timeout variable */
+        $smtp->debug=1; /* Set to 1 to output the communication with the SMTP server */
+        $smtp->html_debug=0; /* Set to 1 to format the debug output as HTML */
+        $smtp->pop3_auth_host=""; /* Set to the POP3 authentication host if your SMTP server requires prior POP3 authentication */
+        $smtp->user="05@nouveaumessage21.ovh"; /* Set to the user name if the server requires authetication */
+        $smtp->realm=""; /* Set to the authetication realm, usually the authentication user e-mail domain */
+        $smtp->password="tomylyjon"; /* Set to the authetication password */
+        $smtp->workstation=""; /* Workstation name for NTLM authentication */
+        $smtp->authentication_mechanism=""; /* Specify a SASL authentication method like LOGIN, PLAIN, CRAM-MD5, NTLM, etc..
+                                               Leave it empty to make the class negotiate if necessary */
 
-        $mailer = Swift_Mailer::newInstance($transport);
-        $message = Swift_Message::newInstance('Cool email')
-                 ->setSubject('Your subject')
-                 ->setFrom(['kevinpiac@gmail.com' => 'kevin de sym'])
-                 ->setTo(array('kevinpiac@gmail.com'))
-                 ->setBody('Ceci est le body normal.')
-                 ->addPart('<p>Ceci est le body en HTML</p>', 'text/html')
-                 ;
-        $result = $mailer->send($message);
-        print_r($result);*/
+        if($smtp->SendMessage(
+            $from,
+            array(
+            $to
+            ),
+            array(
+                "From: $from",
+                "To: $to",
+                "Subject: Testing Manuel Lemos' SMTP class",
+                "Date: ".strftime("%a, %d %b %Y %H:%M:%S %Z")
+            ),
+            "Hello $to,\n\nIt is just to let you know that your SMTP class is working just fine.\n\nBye.\n"))
+            echo "Message sent to $to OK.\n";
+        else
+            echo "Could not send the message to $to.\nError: ".$smtp->error."\n";
     }
 }
