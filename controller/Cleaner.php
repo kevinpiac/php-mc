@@ -61,6 +61,7 @@ class Cleaner extends Controller
                     'error' => 1, 
                     'proxy_error' => 1, 
                     'message' => 'Empty curl result, you should check the proxy',
+                    'ip' => $v['curl_result']['ip']
                 ];
             }
             else
@@ -184,10 +185,12 @@ class Cleaner extends Controller
         $query = "UPDATE ToClean as ToClean SET ToClean.cleaned = 1 WHERE user_id IN (". $ids . ")";
         $this->ToClean->query($query);
         if (!empty($token_errors))
-            $this->handleTokenError($token_errors);
+            $this->handleTokenErrors($token_errors);
+        if (!empty($proxy_errors))
+            $this->handleProxyErrors($proxy_errors);
     }
 
-    public function handleTokenError($token_errors)
+    public function handleTokenErrors($token_errors)
     {
         $current = $token_errors[0]['token'];
         $this->FbAccount->setTokenDownByToken($current);
@@ -197,6 +200,22 @@ class Cleaner extends Controller
             {
                 $this->FbAccount->setTokenDownByToken($v['token']);
                 $current = $v['token'];
+            }
+        }
+    }
+    
+    public function handleProxyErrors($proxy_errors)
+    {
+        $this->loadModel('Proxy');
+        print_r($proxy_errors);
+        $current = $proxy_errors[0]['ip'];
+        $this->Proxy->setProxyDownByIp($current);
+        foreach ($proxy_errors as $k => $v)
+        {
+            if ($v['ip'] != $current)
+            {
+                $this->Proxy->setProxyDownByIp($v['ip']);
+                $current = $v['ip'];
             }
         }
     }

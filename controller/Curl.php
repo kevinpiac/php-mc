@@ -101,7 +101,7 @@ class Curl extends Controller
                     
                 ]);
             else
-                array_push($ret, ['curl_result' => ['error' => 1, 'proxy_error' => '1']]);
+                array_push($ret, ['curl_result' => ['error' => 1, 'proxy_error' => '1', 'ip' => $proxy]]);
         }
         curl_close($curl);
         return ($ret);
