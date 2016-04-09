@@ -13,6 +13,8 @@ define('OG_SEARCH_PART2','&type=user&access_token=');
 
 // -> Clean --> getFacebookIds --> handleFacebookResults --> getFacebookDataByIds --> (saving).
 
+// LAUNCH USING php webroot/index.php Cleaner clean
+
 class Cleaner extends Controller
 {
     public function clean()
@@ -39,13 +41,13 @@ class Cleaner extends Controller
                 $data->url = OG_SEARCH_PART1 . $data->email . OG_SEARCH_PART2 . $t->token ;
             }
             $datas = json_decode(json_encode($datas), true);
-            $ids = array_merge($ids, $this->getFacebookIds($datas, $proxy));
+            $ids = array_merge($ids, $this->getFacebookIds($datas, $proxy, $t->token));
         }
         $this->handleFacebookResults($ids);
     }
 
     // voir pour traiter la blank page error !
-    public function getFacebookIds($data, $proxy)
+    public function getFacebookIds($data, $proxy, $token)
     {
         $ret = Curl::CurlOpenGraph($data, $proxy);
         // on recupere le resultat de l'openGraph et on le formate dans un joli tableau :D 
@@ -64,12 +66,13 @@ class Cleaner extends Controller
             else
             {
                 $data = json_decode($v['curl_result']);
-                // Si une erreur de token (ou autre) survient on recupere le msg de fb et on ajouter l'erreur au tableau.
+                // Si une erreur de token survient on recupere le msg de fb et on ajouter l'erreur au tableau.
                 if (isset($data->error))
                 {
                     $arr = [
                         'error' => 1, 
                         'token_error' => 1, 
+                        'token' => $token,
                         'message' => $data->error->message];
                 } // Sinon, si on a bien recu les donnees, on les ajoute au tableau.
                 else if (isset($data->data[0]))
@@ -152,11 +155,13 @@ class Cleaner extends Controller
             print_r($verified);
             print_r($token_errors);
             print_r($email_errors);
+            print_r($proxy_errors);
             
             $tk_err_count = count($token_errors);
             $mail_err_count = count($email_errors);
             $verif_count = count($verified);
             $proxy_count = count($proxy_errors);
+
             print_r("\n token errors: ". $tk_err_count);
             print_r("\n proxy errors: ". $proxy_count);
             print_r("\n email errors: ". $mail_err_count);
@@ -178,7 +183,22 @@ class Cleaner extends Controller
         $ids = implode(',', $ids);
         $query = "UPDATE ToClean as ToClean SET ToClean.cleaned = 1 WHERE user_id IN (". $ids . ")";
         $this->ToClean->query($query);
-        //$this->handleTokenError($token_errors);
+        if (!empty($token_errors))
+            $this->handleTokenError($token_errors);
+    }
+
+    public function handleTokenError($token_errors)
+    {
+        $current = $token_errors[0]['token'];
+        $this->FbAccount->setTokenDownByToken($current);
+        foreach ($token_errors as $k => $v)
+        {
+            if ($v['token'] != $current)
+            {
+                $this->FbAccount->setTokenDownByToken($v['token']);
+                $current = $v['token'];
+            }
+        }
     }
 } 
 

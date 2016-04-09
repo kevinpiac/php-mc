@@ -98,6 +98,7 @@ class Curl extends Controller
                     'curl_result'       => $json, 
                     'email'             => $v['email'],
                     'user_id'           => $v['user_id']
+                    
                 ]);
             else
                 array_push($ret, ['curl_result' => ['error' => 1, 'proxy_error' => '1']]);

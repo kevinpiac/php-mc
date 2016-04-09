@@ -4,9 +4,51 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "72e74b3dea68880c91a0304033334a53",
-    "content-hash": "62a91e6012e56fabf2df89714761df7f",
+    "hash": "a6afcd4cf8e2288a6ee6b4bdbf2f8031",
+    "content-hash": "64185cbb1f8497b1ab39bb23fcff96bd",
     "packages": [
+        {
+            "name": "mailin-api/mailin-api-php",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mailin-api/mailin-api-php.git",
+                "reference": "ee0ce5b75771e07c0b282b28ee9f667ca5c781d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mailin-api/mailin-api-php/zipball/ee0ce5b75771e07c0b282b28ee9f667ca5c781d6",
+                "reference": "ee0ce5b75771e07c0b282b28ee9f667ca5c781d6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Sendinblue": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "SendinBlue",
+                    "homepage": "https://www.sendinblue.com/"
+                }
+            ],
+            "description": "Official SendinBlue provided API V2 wrapper",
+            "homepage": "https://github.com/mailin-api/mailin-api-php",
+            "time": "2016-02-26 08:48:44"
+        },
         {
             "name": "phpclasses/phpresolver",
             "version": "1.0.1",

@@ -1,5 +1,7 @@
 <?php
 
+define('MAILER_PASS', 'tomylyjon');
+
 class Mailers extends Controller
 {
     public function prepareShooting()
@@ -13,9 +15,10 @@ class Mailers extends Controller
         print_r($people);
         $shooter = $this->Shooter->getShooters();
         print_r($shooter);
+        die();
     }
 
-    public function test()
+    public function prepareSmtp($params)
     {
         $from="kevinpiac@gmail.com"; $sender_line=__LINE__;
         $to="kevinpiac@gmail.com"; $recipient_line=__LINE__;

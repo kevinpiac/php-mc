@@ -5,6 +5,25 @@ class FbAccount extends Model
     public $table = 'FbAccount';
     public $debug = true;
 
+    public function findAccountByToken($fields, $token)
+    {
+        $ret = $this->findFirst([
+            'fields' => $fields,
+            'conditions' => [
+                'token =' => $token
+            ]
+        ]);
+        return ($ret);
+    }
+
+    public function setTokenDownByToken($token)
+    {
+        $query = "UPDATE FbAccount SET token_alive = 0 WHERE token = ";
+        $query .= "'".$token. "'" ;
+        
+        $this->query($query);
+    }
+    
     public function getActiveTokensAndProxys()
     {
         $data = $this->find([

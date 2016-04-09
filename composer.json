@@ -2,17 +2,8 @@
     "name": "root/sym",
   
     "require":
-    {
+    {	
+	"mailin-api/mailin-api-php": "^1.0",
 	"phpclasses/smtpclass": ">=1.0.3"
-    },
-    "repositories":
-    [
-	{
-	    "type": "composer",
-      "url": "https:\/\/www.phpclasses.org\/"
-	},
-	{
-	    "packagist": false
-	}
-    ]
+    }
 }
