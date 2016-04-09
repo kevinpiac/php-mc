@@ -97,8 +97,7 @@ class Curl extends Controller
                 array_push($ret, [
                     'curl_result'       => $json, 
                     'email'             => $v['email'],
-                    'user_id'           => $v['user_id']
-                    
+                    'user_id'           => $v['user_id']                    
                 ]);
             else
                 array_push($ret, ['curl_result' => ['error' => 1, 'proxy_error' => '1', 'ip' => $proxy]]);

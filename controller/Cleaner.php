@@ -88,7 +88,7 @@ class Cleaner extends Controller
                 else // Sinon, c'est que le mail n'existe pas. On ajoute email error au tableau.
                 {
                     $arr = [
-                        'error' => 1, 
+                        'error' => 1,
                         'email_error' => 1,
                         'email' => $v['email'],
                         'user_id' => $v['user_id']
@@ -168,7 +168,8 @@ class Cleaner extends Controller
             print_r("\n email errors: ". $mail_err_count);
             print_r("\n succes      : ". $verif_count."\n");
         }
-
+        if (!empty($proxy_errors))
+            $this->handleProxyErrors($proxy_errors);        
         // On traite chacun des tableaux
         if (!empty($verified))
         {
@@ -186,8 +187,6 @@ class Cleaner extends Controller
         $this->ToClean->query($query);
         if (!empty($token_errors))
             $this->handleTokenErrors($token_errors);
-        if (!empty($proxy_errors))
-            $this->handleProxyErrors($proxy_errors);
     }
 
     public function handleTokenErrors($token_errors)
