@@ -22,7 +22,7 @@ class Model
         }
         try
         {
-            $pdo = new PDO('mysql:host='.$conf['host'].';dbname='.$conf['db_name'], $conf['user'], $conf['password']);
+            $pdo = new PDO('mysql:host='.$conf['host'].';dbname='.$conf['db_name'], $conf['user'], $conf['password'], [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']);
             Model::$connections[$this->conf] = $pdo;
             $this->db = $pdo;
         }
