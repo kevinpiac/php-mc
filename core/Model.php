@@ -7,7 +7,9 @@ class Model
     public $conf = 'vpsKevin';
     public $db;
     public $table = false;
-    public $debug = true;
+    public $debug = false;
+    public $verbose = false;
+
 
     public function __construct()
     {

@@ -15,6 +15,6 @@ class SendinBlue extends Controller
         
         $a = $campaigns['data'][0]['html_content'];
         $a = str_replace('{LINK}', "MON LIEN", $a);
-        print_r($a);
+        
     }
 }

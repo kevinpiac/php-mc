@@ -17,6 +17,8 @@ define('OG_SEARCH_PART2','&type=user&access_token=');
 
 class Cleaner extends Controller
 {
+    public $verbose = true;
+
     public function clean()
     {
         $this->loadModel('ToClean');
@@ -117,10 +119,6 @@ class Cleaner extends Controller
         }
         
         $ret = Curl::CurlOpenGraph($urls, $proxy);
-        
-        /***************************
-         ** TO DO: SHOULD BE ABLE TO PREVENT THE ERROR IF PROXY IS DOWN
-         **************************/
         foreach ($ret as $k => $v)
         {
             $data = json_decode($v['curl_result']);
@@ -149,25 +147,34 @@ class Cleaner extends Controller
             else if(!empty($v['id']))
                 array_push($verified, $v);
         }
-        // Only for debug.
-        $this->debug = true;
-        if (isset($this->debug))
+        ///////////////////////////////
+        // DEBUG AND VERBOSE MESSAGES
+        /////////////////////////////
+        if (isset($this->verbose))
         {
-            print_r($verified);
-            print_r($token_errors);
-            print_r($email_errors);
-            print_r($proxy_errors);
+            $this->debug = true;
+            if (isset($this->debug))
+            {
+                print_r($verified);
+                print_r($token_errors);
+                print_r($email_errors);
+                print_r($proxy_errors);
+            }
             
             $tk_err_count = count($token_errors);
             $mail_err_count = count($email_errors);
             $verif_count = count($verified);
             $proxy_count = count($proxy_errors);
-
+            print_r("-----RESULT------\n");
             print_r("\n token errors: ". $tk_err_count);
             print_r("\n proxy errors: ". $proxy_count);
             print_r("\n email errors: ". $mail_err_count);
             print_r("\n succes      : ". $verif_count."\n");
+            print_r("------------------\n");
         }
+        //////////////////////////////////////////////////////////
+        ///END VERBOSE DEBUG///////////////////////////////////
+        /////////////////////////////////////////////////////////
         if (!empty($proxy_errors))
             $this->handleProxyErrors($proxy_errors);        
         // On traite chacun des tableaux
@@ -193,12 +200,14 @@ class Cleaner extends Controller
     {
         $current = $token_errors[0]['token'];
         $this->FbAccount->setTokenDownByToken($current);
+        print_r("Passing FbAccount's token status to Down -> ". $current . "\n");   
         foreach ($token_errors as $k => $v)
         {
             if ($v['token'] != $current)
             {
                 $this->FbAccount->setTokenDownByToken($v['token']);
                 $current = $v['token'];
+                print_r("Passing FbAccount's token status to Down -> ". $current . "\n");
             }
         }
     }
@@ -206,15 +215,16 @@ class Cleaner extends Controller
     public function handleProxyErrors($proxy_errors)
     {
         $this->loadModel('Proxy');
-        print_r($proxy_errors);
         $current = $proxy_errors[0]['ip'];
         $this->Proxy->setProxyDownByIp($current);
+        print_r("Passing proxy status to Down -> ". $current . "\n");
         foreach ($proxy_errors as $k => $v)
         {
             if ($v['ip'] != $current)
             {
                 $this->Proxy->setProxyDownByIp($v['ip']);
                 $current = $v['ip'];
+                print_r("Passing proxy status to Down -> ". $current . "\n");
             }
         }
     }

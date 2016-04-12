@@ -2,8 +2,31 @@
 
 define('MAILER_PASS', 'tomylyjon');
 
+use Sendinblue\Mailin ;
+     
 class Mailers extends Controller
 {
+
+
+    public function generateUrl()
+    {
+        return "www.generatedUrl.com";
+    }
+
+    public function getSBTemplate()
+    {
+        $mailin = new Mailin('https://api.sendinblue.com/v2.0','ph1Tx72LKAHfmV6E');
+
+        $campaigns = $mailin->get_campaign_v2([
+            'id' => 151
+        ]);        
+        
+        $a = $campaigns['data'][0]['html_content'];
+        $a = str_replace('{LINK}', $this->generateUrl(), $a);
+        print_r($a);
+    }
+
+
     public function prepareShooting()
     {
         $this->loadModel('Shooter');

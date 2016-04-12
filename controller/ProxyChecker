@@ -1,0 +1,11 @@
+<?php
+
+class ProxyChecker extends Controller
+{
+    
+	public function checkProxys()
+    {
+        $this->loadModel('Proxy');
+        print_r($this->Proxy->getDownProxys());
+    }
+}
